@@ -25,7 +25,15 @@ db.Avatar.insertMany(
         eyeColor    :   2,
         furColor    :   1,
         animal      :   1,
-        attribute   :   Map<String, int>
+        attribute   :   
+        {
+            Health      :   100,
+            Strength    :   25,
+            Stamina     :   20,
+            Agility     :   20,
+            Intellect   :   20,
+            Dexterity   :   20
+        }
     },
     {
         avatarUID   :   2, 
@@ -35,7 +43,15 @@ db.Avatar.insertMany(
         eyeColor    :   2,
         furColor    :   2,
         animal      :   2,
-        attribute   :   Map<String, int>
+        attribute   :   
+        {
+            Health      :   100,
+            Strength    :   20,
+            Stamina     :   25,
+            Agility     :   20,
+            Intellect   :   20,
+            Dexterity   :   20
+        }
     },
     {
         avatarUID   :   3, 
@@ -45,7 +61,15 @@ db.Avatar.insertMany(
         eyeColor    :   3,
         furColor    :   2,
         animal      :   3,
-        attribute   :   Map<String, int>
+        attribute   :   
+        {
+            Health      :   100,
+            Strength    :   20,
+            Stamina     :   20,
+            Agility     :   25,
+            Intellect   :   20,
+            Dexterity   :   20
+        }
     },
     {
         avatarUID   :   4, 
@@ -55,6 +79,14 @@ db.Avatar.insertMany(
         eyeColor    :   1,
         furColor    :   1,
         animal      :   1,
-        attribute   :   Map<String, int>
+        attribute   :   
+        {
+            Health      :   100,
+            Strength    :   20,
+            Stamina     :   20,
+            Agility     :   20,
+            Intellect   :   25,
+            Dexterity   :   20
+        }
     }
 ]);

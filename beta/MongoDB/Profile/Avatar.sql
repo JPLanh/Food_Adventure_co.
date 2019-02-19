@@ -90,3 +90,6 @@ db.Avatar.insertMany(
         }
     }
 ]);
+
+-- Useful Function(s)
+ db.Avatar.find({"attribute.Health":100}).pretty();

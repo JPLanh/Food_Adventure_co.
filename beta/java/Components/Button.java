@@ -47,11 +47,11 @@ public class Button extends JPanel implements UIComponent{
 	@Override
 	public void draw(Graphics g) 
 	{
-		g.setColor(Color.BLACK);
-		g.fillRect(xPos-1, yPos-1, width+2, height+2);
-		g.setColor(Color.white);
+//		g.setColor(Color.BLACK);
+//		g.fillRect(xPos-1, yPos-1, width+2, height+2);
+		g.setColor(new Color(188, 201, 155));
 		g.fillRect(xPos, yPos, width, height);
-		g.setColor(Color.BLACK);
+		g.setColor(Color.WHITE);
 		g.drawString(string, xPos+(width/2)-(string.length()*3), yPos+(height/2)+2);
 	}
 

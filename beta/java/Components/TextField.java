@@ -17,7 +17,7 @@ public class TextField extends JPanel implements UIComponent{
 	private String name, string = "";
 	private boolean hidden = false, active = false;
 
-	public TextField(String getName, int getXPos, int getYPos)
+	public TextField(String getName, int getXPos, int getYPos, String setString)
 	{
 		name = getName;
 		xPos = getXPos;
@@ -28,13 +28,14 @@ public class TextField extends JPanel implements UIComponent{
 		highX = xPos+width;
 		lowY = yPos;
 		highY = yPos+height;
+		string = setString;
 	}
 
 	public void draw(Graphics g) 
 	{
-		g.setColor(Color.BLACK);
-		g.fillRect(xPos-2, yPos-2, width+4, height+4);
-		g.setColor(Color.white);
+//		g.setColor(Color.BLACK);
+//		g.fillRect(xPos-2, yPos-2, width+4, height+4);
+		g.setColor(new Color(242, 242, 242));
 		g.fillRect(xPos, yPos, width, height);
 		g.setColor(Color.BLACK);
 		g.drawString(string, xPos+12, yPos+20);

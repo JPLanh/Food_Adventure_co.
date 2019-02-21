@@ -10,7 +10,7 @@ public class GUIController extends JPanel{
 	int UIwidth, UIheight;
 	
 	public GUIController(){
-		//currentFrame = initialize your page here
+		currentFrame = new TitleUI();
 	}
 
 	@Override

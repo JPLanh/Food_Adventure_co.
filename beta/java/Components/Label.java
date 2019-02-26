@@ -1,6 +1,7 @@
 package Components;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
@@ -45,7 +46,7 @@ public class Label extends JPanel implements UIComponent{
 
 	public void draw(Graphics g) 
 	{
-		g.setColor(Color.BLACK);
+		g.setColor(Color.BLACK); 
 		g.drawString(string, xPos+12, yPos+20);
 	}
 
@@ -57,5 +58,17 @@ public class Label extends JPanel implements UIComponent{
 	public String getName() 
 	{
 		return name;
+	}
+
+	@Override
+	public boolean isClickedOn(int mouseX, int mouseY)
+	{ 
+		if (mouseX < highX && mouseX > lowX && mouseY < highY && mouseY > lowY)	return true;
+		else return false;
+	}
+
+	@Override
+	public String clickAction() {
+		return null;
 	}
 }

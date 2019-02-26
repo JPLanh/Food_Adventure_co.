@@ -37,7 +37,7 @@ public class TextField extends JPanel implements UIComponent{
 //		g.fillRect(xPos-2, yPos-2, width+4, height+4);
 		g.setColor(new Color(242, 242, 242));
 		g.fillRect(xPos, yPos, width, height);
-		g.setColor(Color.BLACK);
+		g.setColor(new Color(188, 201, 155));
 		g.drawString(string, xPos+12, yPos+20);
 	}
 
@@ -55,5 +55,17 @@ public class TextField extends JPanel implements UIComponent{
 	{
 		if (c.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE && string.length() > 1) string = string.substring(0, string.length()-2) + "|";
 		else if (Character.isLetterOrDigit(c.getKeyChar())) string = string.substring(0,string.length()-1) + c.getKeyChar() + "|";
+	}
+
+	@Override
+	public boolean isClickedOn(int mouseX, int mouseY)
+	{ 
+		if (mouseX < highX && mouseX > lowX && mouseY < highY && mouseY > lowY)	return true;
+		else return false;
+	}
+
+	@Override
+	public String clickAction() {
+		return null;
 	}
 }

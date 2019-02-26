@@ -33,4 +33,17 @@ public class GUIList {
 			x.draw(g);
 		}
 	}
+	public String mouseSelect(int mouseX, int mouseY)
+	{
+		UIComponent selectedUI = null;
+		for (UIComponent x : listOfGui)
+		{
+			if (x.isClickedOn(mouseX, mouseY))
+			{
+				selectedUI =  x;
+			}
+		}
+		if (selectedUI == null) return null;
+		return selectedUI.clickAction();
+	}
 }

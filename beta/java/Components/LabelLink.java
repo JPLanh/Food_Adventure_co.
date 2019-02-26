@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 
-public class Button extends JPanel implements UIComponent{
+public class LabelLink extends JPanel implements UIComponent{
 	/**
 	 * 
 	 */
@@ -16,7 +16,7 @@ public class Button extends JPanel implements UIComponent{
 	private String name, string, action = "";
 	private boolean hidden = false;
 
-	public Button(String getName, int getXPos, int getYPos, int getWidth, int getHeight, String getString)
+	public LabelLink(String getName, int getXPos, int getYPos, int getWidth, int getHeight, String getString)
 	{
 		name = getName;
 		xPos = getXPos;
@@ -30,7 +30,7 @@ public class Button extends JPanel implements UIComponent{
 		string = getString;
 	}
 
-	public Button(String getName, int getXPos, int getYPos, int getWidth, int getHeight, String getString, String getAction)
+	public LabelLink(String getName, int getXPos, int getYPos, int getWidth, int getHeight, String getString, String getAction)
 	{
 		name = getName;
 		xPos = getXPos;
@@ -49,9 +49,7 @@ public class Button extends JPanel implements UIComponent{
 	{
 //		g.setColor(Color.BLACK);
 //		g.fillRect(xPos-1, yPos-1, width+2, height+2);
-		g.setColor(new Color(188, 201, 155));
-		g.fillRect(xPos, yPos, width, height);
-		g.setColor(Color.WHITE);
+		g.setColor(new Color(76, 175, 80));
 		g.drawString(string, xPos+(width/2)-(string.length()*3), yPos+(height/2)+2);
 	}
 
@@ -64,7 +62,6 @@ public class Button extends JPanel implements UIComponent{
 	{
 		return name;
 	}
-	
 
 	@Override
 	public boolean isClickedOn(int mouseX, int mouseY)

@@ -24,7 +24,7 @@ public class SignupUI implements UIFrame{
 		frameComponents.add(new TextField("Username", 300, 220, "Username"));
 		frameComponents.add(new TextField("Password", 300, 260, "Password"));
 		frameComponents.add(new TextField("Confirm Password", 300, 300, "Confirm Password"));
-		frameComponents.add(new Button("SIGN UP", 300, 345, 150, 30, "SIGN UP", "goto Create User"));
+		frameComponents.add(new Button("SIGN UP", 300, 345, 150, 30, "SIGN UP", "goto Sign User"));
 		frameComponents.add(new Label("Already have", 275, 380, "Already have an account?"));
 		frameComponents.add(new LabelLink("Login", 370, 383, 150, 30, "Login", "goto Login Frame"));
 	}
@@ -39,9 +39,7 @@ public class SignupUI implements UIFrame{
 	public String clickAction(int mouseX, int mouseY) {
 		String getAction = frameComponents.mouseSelect(mouseX, mouseY);
 		if (getAction != null) {
-			if (getAction.equals("goto Create User")) HttpRequests.registerUser(Integer.parseInt(((TextField)frameComponents.get("User UID")).getString()), ((TextField)frameComponents.get("Username")).getString(), ((TextField)frameComponents.get("Password")).getString());
-			else return getAction;
-			return null;
+			return getAction + " " + ((TextField)frameComponents.get("User UID")).getString() + " " + ((TextField)frameComponents.get("Username")).getString() + " " + ((TextField)frameComponents.get("Password")).getString();
 		}
 		return null;
 	}

@@ -8,7 +8,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.*;
+
+import Components.TextField;
 import Components.UIFrame;
+import Components.User;
+import Main.HttpRequests;
 
 public class GUIController extends JPanel implements MouseListener{
 
@@ -17,12 +21,13 @@ public class GUIController extends JPanel implements MouseListener{
 	 */
 	private static final long serialVersionUID = -3149851920030223090L;
 	UIFrame currentFrame;
+	User currentUser;
 	int UIwidth, UIheight;
 	
 	public GUIController(){
 		addMouseListener(this);
 		setBackground(new Color(232, 176, 175));
-		currentFrame = new SignupUI();
+		currentFrame = new LoginUI();
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent event) {
@@ -47,7 +52,19 @@ public class GUIController extends JPanel implements MouseListener{
 			if (takeAction[0].equals("goto"))
 			{
 				if (takeAction[1].equals("Register")) currentFrame = new SignupUI();
-				else if (takeAction[1].equals("Login")) currentFrame = new LoginUI();
+				else if (takeAction[1].equals("Login")) {
+					currentUser = HttpRequests.getUser(0, takeAction[3], takeAction[4]);
+					currentFrame = new ClientHomeUI(currentUser);
+				}
+				else if (takeAction[1].equals("Home")) currentFrame = new ClientHomeUI(currentUser);
+				else if (takeAction[1].equals("Create")) currentFrame = new CreateUI();
+				else if (takeAction[1].equals("Account")) currentFrame = new ClientViewAccountUI(currentUser);
+				else if (takeAction[1].equals("View")) currentFrame = new ClientViewAccountUI(currentUser);
+				else if (takeAction[1].equals("Edit")) currentFrame = new ClientEditAccountUI(currentUser);
+				else if (takeAction[1].equals("Sign")) {
+					currentUser = HttpRequests.registerUser(Integer.parseInt(takeAction[3]), takeAction[4], takeAction[5]);
+					currentFrame = new ClientHomeUI(currentUser);
+				}
 			}
 			else if (takeAction[0].equals("Activate"))
 			{

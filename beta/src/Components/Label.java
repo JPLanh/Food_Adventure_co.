@@ -12,7 +12,7 @@ public class Label extends JPanel implements UIComponent{
 	 * 
 	 */
 	private static final long serialVersionUID = 2570709091349969835L;
-	private int xPos, yPos, width, height;
+	private int xPos, yPos, width, height, fontSize = 12;
 	private int lowX, highX, lowY, highY;
 	private String name, string = "";
 	private boolean hidden = false;
@@ -44,9 +44,24 @@ public class Label extends JPanel implements UIComponent{
 		string = getString;
 	}
 
+	public Label(String getName, int getXPos, int getYPos, String getString, int getSize)
+	{
+		name = getName;
+		xPos = getXPos;
+		yPos = getYPos;
+		width = 150;
+		height = 30;
+		lowX = xPos;
+		highX = xPos+width;
+		lowY = yPos;
+		highY = yPos+height;
+		string = getString;
+		fontSize = getSize;
+	}
 	public void draw(Graphics g) 
 	{
 		g.setColor(Color.BLACK); 
+		g.setFont(new Font(g.getFont().getFontName(), Font.PLAIN, fontSize)); 
 		g.drawString(string, xPos+12, yPos+20);
 	}
 

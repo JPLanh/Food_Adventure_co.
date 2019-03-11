@@ -31,10 +31,7 @@ public class LoginUI  implements UIFrame{
 	public String clickAction(int mouseX, int mouseY) {
 		String getAction = frameComponents.mouseSelect(mouseX, mouseY);
 		if (getAction != null) {
-			String getUser = ((TextField)frameComponents.get("username")).getString();
-			if (getAction.equals("goto Login User")) HttpRequests.getUser(0, ((TextField)frameComponents.get("username")).getString(), ((TextField)frameComponents.get("password")).getString());
-			else return getAction;
-			return null;
+			return getAction +  " " +  ((TextField)frameComponents.get("Username")).getString() + " " + ((TextField)frameComponents.get("Password")).getString();
 		}
 		return null;
 	}

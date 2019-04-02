@@ -39,6 +39,7 @@ public class SignupUI implements UIFrame{
 	public String clickAction(int mouseX, int mouseY) {
 		String getAction = frameComponents.mouseSelect(mouseX, mouseY);
 		if (getAction != null) {
+			if (((TextField)frameComponents.get("Password")).getString().equals(((TextField)frameComponents.get("Confirm Password")).getString()))
 			return getAction + " " + ((TextField)frameComponents.get("User UID")).getString() + " " + ((TextField)frameComponents.get("Username")).getString() + " " + ((TextField)frameComponents.get("Password")).getString();
 		}
 		return null;
@@ -49,4 +50,10 @@ public class SignupUI implements UIFrame{
 		frameComponents.keyPress(c);
 		
 	}
+	
+
+	@Override
+	public void tick() {
+		frameComponents.tick();
+	}	
 }

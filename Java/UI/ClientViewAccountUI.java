@@ -24,11 +24,11 @@ public class ClientViewAccountUI implements UIFrame{
 		frameComponents.add(new Shape("SQUARE", Color.GRAY, 49, 129, 682, 422, true));
 		frameComponents.add(new Shape("SQUARE", Color.WHITE, 50, 130, 680, 420, true));
 		
-
 		frameComponents.add(new Button("Home", 55, 0, 80, 50, "Home", "goto Home User", new Color(232, 176, 175), Color.GRAY, 16));
 		frameComponents.add(new Button("Shop", 135, 0, 80, 50, "Shop", "goto Shop User", new Color(232, 176, 175), Color.GRAY, 16));
-		frameComponents.add(new Button("Gacha", 215, 0, 80, 50, "Gacha", "goto Gacha User", new Color(232, 176, 175), Color.GRAY, 16));
-		frameComponents.add(new Button("Tournament", 295, 0, 80, 50, "Tournament", "goto Tournament User", new Color(232, 176, 175), Color.GRAY, 16));
+//		frameComponents.add(new Button("Gacha", 215, 0, 80, 50, "Gacha", "goto Gacha User", new Color(232, 176, 175), Color.GRAY, 16));
+		frameComponents.add(new Button("Guild", 215, 0, 80, 50, "Guild", "goto Guild User", new Color(232, 176, 175), Color.GRAY, 16));
+		frameComponents.add(new Button("Avatar", 295, 0, 80, 50, "Avatar", "goto Avatar User", new Color(232, 176, 175), Color.GRAY, 16));
 		frameComponents.add(new Button("My Account", 580, 0, 80, 50, "My Account", "goto Account User", new Color(232, 176, 175), Color.GRAY, 16));
 		frameComponents.add(new Button("Logout", 680, 0, 80, 50, "Logout", "goto Logout User", new Color(232, 176, 175), Color.GRAY, 16));
 
@@ -72,5 +72,10 @@ public class ClientViewAccountUI implements UIFrame{
 	public void keyPress(KeyEvent c) {
 		frameComponents.keyPress(c);
 		
+	}
+
+	@Override
+	public void tick() {
+		frameComponents.tick();
 	}
 }

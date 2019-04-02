@@ -25,7 +25,7 @@ public class CreateUI implements UIFrame{
 		frameComponents.add(new TextField("Phone", 300, 260, "Phone"));
 		frameComponents.add(new TextField("Email", 300, 300, "Email"));
 		frameComponents.add(new TextField("Date of Birth", 300, 340, "Date of Birth"));
-		frameComponents.add(new Button("SIGN UP", 300, 385, 150, 30, "SIGN UP", "goto Create User"));
+		frameComponents.add(new Button("SIGN UP", 300, 385, 150, 30, "Create User", "Create New User"));
 	}
 
 	@Override
@@ -38,13 +38,12 @@ public class CreateUI implements UIFrame{
 	public String clickAction(int mouseX, int mouseY) {
 		String getAction = frameComponents.mouseSelect(mouseX, mouseY);
 		if (getAction != null) {
-			if (getAction.equals("goto Create User")) HttpRequests.createUser(
+			if (getAction.equals("Create New User")) HttpRequests.createUser(
 					((TextField)frameComponents.get("First Name")).getString(), ((TextField)frameComponents.get("Last Name")).getString(),
 					((TextField)frameComponents.get("Email")).getString(), ((TextField)frameComponents.get("Phone")).getString(), 
 					((TextField)frameComponents.get("Date of Birth")).getString()
 					);
-			else return getAction;
-			return null;
+			return getAction;
 		}
 		return null;
 	}
@@ -52,5 +51,10 @@ public class CreateUI implements UIFrame{
 	@Override
 	public void keyPress(KeyEvent c) {
 		frameComponents.keyPress(c);
+	}
+
+	@Override
+	public void tick() {
+		frameComponents.tick();
 	}
 }

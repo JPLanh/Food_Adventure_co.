@@ -21,8 +21,9 @@ public class ClientRefundUI  implements UIFrame{
 		frameComponents.add(new Shape("SQUARE", Color.WHITE, 0, 50, 800, 550, true));
 		frameComponents.add(new Button("Home", 55, 0, 80, 50, "Home", "goto Home User", new Color(232, 176, 175), Color.GRAY, 16));
 		frameComponents.add(new Button("Shop", 135, 0, 80, 50, "Shop", "goto Shop User", new Color(232, 176, 175), Color.GRAY, 16));
-		frameComponents.add(new Button("Gacha", 215, 0, 80, 50, "Gacha", "goto Gacha User", new Color(232, 176, 175), Color.GRAY, 16));
-		frameComponents.add(new Button("Tournament", 295, 0, 80, 50, "Tournament", "goto Tournament User", new Color(232, 176, 175), Color.GRAY, 16));
+//		frameComponents.add(new Button("Gacha", 215, 0, 80, 50, "Gacha", "goto Gacha User", new Color(232, 176, 175), Color.GRAY, 16));
+		frameComponents.add(new Button("Guild", 215, 0, 80, 50, "Guild", "goto Guild User", new Color(232, 176, 175), Color.GRAY, 16));
+		frameComponents.add(new Button("Avatar", 295, 0, 80, 50, "Avatar", "goto Avatar User", new Color(232, 176, 175), Color.GRAY, 16));
 		frameComponents.add(new Button("My Account", 580, 0, 80, 50, "My Account", "goto Account User", new Color(232, 176, 175), Color.GRAY, 16));
 		frameComponents.add(new Button("Logout", 680, 0, 80, 50, "Logout", "goto Logout User", new Color(232, 176, 175), Color.GRAY, 16));
 
@@ -32,10 +33,9 @@ public class ClientRefundUI  implements UIFrame{
 		frameComponents.add(new Button("Reward", 15, 180, 150, 30, "My rewards", "goto Reward Account"));
 		frameComponents.add(new Button("Purchase", 15, 220, 150, 30, "Get more diamonds", "goto Diamond Account"));
 
-		
 		for (int x = 0; x < rewardList.size(); x++) {
-			frameComponents.add(new PurchaseItem(rewardList.get(x), 250 + (160*x), 150, 150, 150, rewardList.get(x).getCoin() + " coins", "Refund " + rewardList.get(x).getRedemptionID()));
-		}
+			frameComponents.add(new PurchaseItem(rewardList.get(x).getName(), 250 + ((160*x)) % (160*3), 110 + (int)(215*Math.floor((x)/(3))), 150, 150, rewardList.get(x).getCoin() + " coins", "Refund " + rewardList.get(x).getName()));
+		}		
 	}
 
 	@Override
@@ -53,6 +53,7 @@ public class ClientRefundUI  implements UIFrame{
 				HttpRequests.finishRefund(currentUser, getAction.substring(7));
 //				System.out.println(getAction.substring(9));
 				return null;
+				
 			}
 		}
 		return getAction;
@@ -61,6 +62,11 @@ public class ClientRefundUI  implements UIFrame{
 	@Override
 	public void keyPress(KeyEvent c) {
 		frameComponents.keyPress(c);
+	}
+
+	@Override
+	public void tick() {
+		frameComponents.tick();
 	}
 
 }

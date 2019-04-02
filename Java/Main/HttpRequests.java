@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,6 +18,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
+import Components.Avatar;
 import Components.Guild;
 import Components.Reward;
 import Components.User;
@@ -26,7 +29,6 @@ public class HttpRequests {
 		URL url;
 		try {
 			url = new URL("http://35.235.118.188:3000/javaUsersLogin/"+getUserName+"/"+getPassword);
-			System.out.println(getUserName);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setDoOutput(true);
 			con.setRequestMethod("GET");
@@ -44,12 +46,68 @@ public class HttpRequests {
 					content.append(System.lineSeparator());
 				}
 			}
-			System.out.println(content.toString());
 			return new Gson().fromJson(content.toString(), User.class);
 		} catch (Exception e) {
-			e.printStackTrace();
+			return null;
 		}
-		return null;
+	}
+
+	public static void updateAvatar(int getUserID, String getAvatar) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/defaultAvatar/"+getUserID+"/"+getAvatar);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			con.getInputStream();
+			
+//			StringBuilder content;
+//
+//			try (BufferedReader in = new BufferedReader(
+//					new InputStreamReader(con.getInputStream()))) {			
+//				String line;
+//				content = new StringBuilder();
+//				while ((line = in.readLine()) != null) {
+//					content.append(line);
+//					content.append(System.lineSeparator());
+//				}
+//			}
+//			return new Gson().fromJson(content.toString(), User.class);
+		} catch (Exception e) {
+			System.out.println("Errror updating");
+		}
+	}
+
+	public static void deleteAvatar(String getAvatar) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/deleteAvatar/"+getAvatar);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			con.getInputStream();
+			
+//			StringBuilder content;
+//
+//			try (BufferedReader in = new BufferedReader(
+//					new InputStreamReader(con.getInputStream()))) {			
+//				String line;
+//				content = new StringBuilder();
+//				while ((line = in.readLine()) != null) {
+//					content.append(line);
+//					content.append(System.lineSeparator());
+//				}
+//			}
+//			return new Gson().fromJson(content.toString(), User.class);
+		} catch (Exception e) {
+			System.out.println("Errror updating");
+		}
 	}
 	
 	public static User searchUser(int getUserID) {
@@ -150,6 +208,74 @@ public class HttpRequests {
 		}
 		return null;
 	}
+
+	public static void terminateUser(User user) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/terminateAccount/");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			
+			byte[] postData = user.getRequest().getBytes(StandardCharsets.UTF_8);
+			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+				wr.write(postData);
+				StringBuilder content;
+
+				try (BufferedReader in = new BufferedReader(
+						new InputStreamReader(con.getInputStream()))) {			
+					String line;
+					content = new StringBuilder();
+					while ((line = in.readLine()) != null) {
+						content.append(line);
+						content.append(System.lineSeparator());
+					}
+				}
+			} catch (IOException e) {
+				System.out.println("Server is off");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
+	
+	public static Avatar createAvatar(Avatar getAvatar, User getUser) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/avatar/" + getAvatar.getName() + "/" + getUser.getUserUID());
+			System.out.println(url);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			
+			byte[] postData = getAvatar.getRequest().getBytes(StandardCharsets.UTF_8);
+			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+				wr.write(postData);
+				StringBuilder content;
+
+				try (BufferedReader in = new BufferedReader(
+						new InputStreamReader(con.getInputStream()))) {			
+					String line;
+					content = new StringBuilder();
+					while ((line = in.readLine()) != null) {
+						content.append(line);
+						content.append(System.lineSeparator());
+					}
+				}
+			} catch (IOException e) {
+				System.out.println("Server is off");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
 	
 	public static User createUser(String getFirstName, String getLastName, String getEmail, String getPhone, String getDateOfBirth) {
 		URL url;
@@ -191,6 +317,50 @@ public class HttpRequests {
 		}
 		return null;
 	}
+
+	public static ArrayList<Avatar> getAllUserAvatar(User getUser) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/avatar/" + getUser.getUserUID());
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			StringBuilder content;
+			try (BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()))) {			
+				String line;
+				content = new StringBuilder();
+				while ((line = in.readLine()) != null) {
+					content.append(line);
+				}
+			}	
+			JsonArray getJsonArr = toJsonArr(content.toString());
+			try {
+				ArrayList<Avatar> allCard = new ArrayList<Avatar>();
+				for (JsonElement x : getJsonArr)
+				{
+					if (getJsonArr != null) {
+						Avatar temp = new Avatar(x.getAsJsonObject());
+						//Avatar temp = new Avatar((toJsonArr(x.getAsJsonObject().get("avatarID").toString()).get(0)).getAsJsonObject());
+						allCard.add(temp);
+					}
+				}
+				return allCard;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		} catch (MalformedURLException e) {
+			System.out.println("ERROR");
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
 	
 	public static ArrayList<Reward> getAllRewards() {
 		URL url;
@@ -238,7 +408,8 @@ public class HttpRequests {
 	public static Reward searchReward(Reward getReward) {
 		URL url;
 		try {
-			url = new URL("http://35.235.118.188:3000/adminCreateReward/" + getReward.getName().replaceAll(" ", "<>"));
+			System.out.println(URLEncoder.encode(getReward.getName(), "UTF-8"));
+			url = new URL("http://35.235.118.188:3000/adminCreateReward/" + URLEncoder.encode(getReward.getName(), "UTF-8"));
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setDoOutput(true);
 			con.setRequestMethod("GET");
@@ -265,7 +436,7 @@ public class HttpRequests {
 	public static void purchaseReward(User getUser, String getReward) {
 		URL url;
 		try {
-			url = new URL("http://35.235.118.188:3000/rewards/" + Integer.toString(getUser.getUserUID()) +"/"+ getReward.replaceAll(" ", "<>"));
+			url = new URL("http://35.235.118.188:3000/rewards/" + Integer.toString(getUser.getUserUID()) +"/"+ URLEncoder.encode(getReward, "UTF-8"));//getReward.replaceAll(" ", "<>"));
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			con.setRequestProperty("User-Agent", "Java client");
@@ -298,7 +469,7 @@ public class HttpRequests {
 	public static ArrayList<Reward> getAllMyRewards(User getUser) {
 		URL url;
 		try {
-			url = new URL("http://35.235.118.188:3000/Rewards/" + getUser.getUserUID());
+			url = new URL("http://35.235.118.188:3000/rewards/" + getUser.getUserUID());
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setDoOutput(true);
 			con.setRequestMethod("GET");
@@ -646,7 +817,7 @@ public class HttpRequests {
 	public static Reward updateReward(Reward getReward) {
 		URL url;
 		try {
-			url = new URL("http://35.235.118.188:3000/adminCreateReward/" + getReward.getName().replaceAll(" ", "<>"));
+			url = new URL("http://35.235.118.188:3000/adminCreateReward/" + URLEncoder.encode(getReward.getName(), "UTF-8")); //getReward.getName().replaceAll(" ", "<>"));
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setDoOutput(true);
 			con.setRequestMethod("POST");

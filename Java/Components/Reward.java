@@ -6,17 +6,29 @@ import com.google.gson.JsonObject;
 import Main.HttpRequests;
 
 public class Reward implements JsonInterface{
-	private String name, itemID, redemptionID, redeemedDate, purchaseDate;
-	private int coin, diamond, tier;
-	
+	private String name, itemID, redemptionID, redeemedDate, purchaseDate, type, discountType;
+	private int coin, diamond, tier, strength, agility, intellect, stamina, dexterity, health, discount;
+
 	public Reward(JsonObject json){
 		name = json.get("name").getAsString();
 		coin = json.get("coin").getAsInt();
 		tier = json.get("tier").getAsInt();
 		diamond = json.get("diamond").getAsInt();
 		itemID = json.get("_id").getAsString();
+		type = json.get("type").getAsString();
+		if (type.equals("Item")) {
+			strength = json.get("strength").getAsInt();
+			agility = json.get("agility").getAsInt();
+			dexterity = json.get("dexterity").getAsInt();
+			intellect = json.get("intellect").getAsInt();
+			health = json.get("health").getAsInt();
+			stamina = json.get("stamina").getAsInt();
+		} else if (type.equals("Coupon")) {
+			discountType = json.get("discountType").getAsString();
+			discount = json.get("discount").getAsInt();			
+		}
 	}
-	
+
 	public Reward(JsonObject json, boolean redemption){
 		redemptionID = json.get("_id").getAsString();
 		if (!json.get("redeemedDate").isJsonNull()) redeemedDate = json.get("redeemedDate").getAsString();
@@ -27,7 +39,19 @@ public class Reward implements JsonInterface{
 		coin = getJson.get("coin").getAsInt();
 		tier = getJson.get("tier").getAsInt();
 		diamond = getJson.get("diamond").getAsInt();
-		itemID = getJson.get("_id").getAsString();			
+		type = getJson.get("type").getAsString();		
+		itemID = getJson.get("_id").getAsString();	
+		if (type.equals("Item")) {
+			strength = getJson.get("strength").getAsInt();
+			agility = getJson.get("agility").getAsInt();
+			dexterity = getJson.get("dexterity").getAsInt();
+			intellect = getJson.get("intellect").getAsInt();
+			health = getJson.get("health").getAsInt();
+			stamina = getJson.get("stamina").getAsInt();
+		} else if (type.equals("Coupon")) {
+			discountType = getJson.get("discountType").getAsString();
+			discount = getJson.get("discount").getAsInt();			
+		}
 	}
 
 	Reward(String getName, int getCoin, int getDiamond, int getTier)
@@ -37,7 +61,7 @@ public class Reward implements JsonInterface{
 		diamond = getDiamond;
 		tier = getTier;
 	}
-	
+
 	public Reward(String getName)
 	{
 		name = getName;
@@ -89,8 +113,36 @@ public class Reward implements JsonInterface{
 		tempString += "&coin=" + coin;
 		tempString += "&diamond=" + diamond;
 		tempString += "&tier=" + tier;
+		tempString += "&type=" + type;
+		if (type.equals("Item")) {
+			tempString += "&strength=" + strength;
+			tempString += "&agility=" + agility;
+			tempString += "&dexterity=" + dexterity;
+			tempString += "&intellect=" + intellect;
+			tempString += "&stamina=" + stamina;
+			tempString += "&health=" + health;
+		} else {
+			tempString += "&discountType=" + discountType;
+			tempString += "&discount=" + discount;
+		}
 		return tempString;
 	}
+	public String getDiscountType() {
+		return discountType;
+	}
+
+	public int getDiscount() {
+		return discount;
+	}
+
+	public void setDiscountType(String discountType) {
+		this.discountType = discountType;
+	}
+
+	public void setDiscount(int discount) {
+		this.discount = discount;
+	}
+
 	@Override
 	public String toString() {
 		return "name= " + name + ", coin= " + coin + ", diamond= " + diamond + ", tier=" + tier + ", UID=" + itemID;
@@ -122,6 +174,62 @@ public class Reward implements JsonInterface{
 
 	public void setItemID(String itemID) {
 		this.itemID = itemID;
+	}
+
+	public int getStrength() {
+		return strength;
+	}
+
+	public int getAgility() {
+		return agility;
+	}
+
+	public int getIntellect() {
+		return intellect;
+	}
+
+	public int getStamina() {
+		return stamina;
+	}
+
+	public int getDexterity() {
+		return dexterity;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setStrength(int strength) {
+		this.strength = strength;
+	}
+
+	public void setAgility(int agility) {
+		this.agility = agility;
+	}
+
+	public void setIntellect(int intellect) {
+		this.intellect = intellect;
+	}
+
+	public void setStamina(int stamina) {
+		this.stamina = stamina;
+	}
+
+	public void setDexterity(int dexterity) {
+		this.dexterity = dexterity;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

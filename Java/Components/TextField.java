@@ -56,11 +56,17 @@ public class TextField extends JPanel implements UIComponent{
 
 	public void keyPress(KeyEvent c)
 	{
-//		System.out.println(c.getKeyCode());
-		if (c.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE && string.length() > 1) string = string.substring(0, string.length()-2) + "|";
-		else if (Character.toString(c.getKeyChar()).matches("[a-zA-Z0-9@.\\s]")) {  
-				string = string.substring(0,string.length()-1) + c.getKeyChar() + "|";
+
+		if (c.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE) {
+			if (string.length() > 1) string = string.substring(0, string.length()-2) + "|";
+		} else {
+			if (c.getKeyCode() != 16) string = string.substring(0,string.length()-1) + c.getKeyChar() + "|";
 		}
+//		System.out.println(c.getKeyCode());
+//		if (c.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE && string.length() > 1) string = string.substring(0, string.length()-2) + "|";
+//		else if (Character.toString(c.getKeyChar()).matches("[a-zA-Z0-9@.\\s]")) {  
+//				string = string.substring(0,string.length()-1) + c.getKeyChar() + "|";
+//		}
 	}
 
 	@Override

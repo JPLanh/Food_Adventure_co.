@@ -153,4 +153,9 @@ public class User implements JsonInterface{
 	public void setLeader(boolean leader) {
 		this.leader = leader;
 	}
+	
+	@Override
+	public String toString() {
+		return getRequest();
+	}
 }

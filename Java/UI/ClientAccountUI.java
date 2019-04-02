@@ -35,4 +35,8 @@ public class ClientAccountUI  implements UIFrame{
 		frameComponents.keyPress(c);
 	}
 
+	@Override
+	public void tick() {
+		frameComponents.tick();
+	}
 }

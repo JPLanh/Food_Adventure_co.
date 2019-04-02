@@ -7,4 +7,5 @@ public interface UIFrame{
 	public void draw(Graphics g);
 	public String clickAction(int mouseX, int mouseY);
 	public void keyPress(KeyEvent c);
+	public void tick();
 }

@@ -29,8 +29,9 @@ public class ClientGuildUI  implements UIFrame{
 
 		frameComponents.add(new Button("Home", 55, 0, 80, 50, "Home", "goto Home User", new Color(232, 176, 175), Color.GRAY, 16));
 		frameComponents.add(new Button("Shop", 135, 0, 80, 50, "Shop", "goto Shop User", new Color(232, 176, 175), Color.GRAY, 16));
-		frameComponents.add(new Button("Gacha", 215, 0, 80, 50, "Gacha", "goto Gacha User", new Color(232, 176, 175), Color.GRAY, 16));
-		frameComponents.add(new Button("Tournament", 295, 0, 80, 50, "Tournament", "goto Tournament User", new Color(232, 176, 175), Color.GRAY, 16));
+//		frameComponents.add(new Button("Gacha", 215, 0, 80, 50, "Gacha", "goto Gacha User", new Color(232, 176, 175), Color.GRAY, 16));
+		frameComponents.add(new Button("Guild", 215, 0, 80, 50, "Guild", "goto Guild User", new Color(232, 176, 175), Color.GRAY, 16));
+		frameComponents.add(new Button("Avatar", 295, 0, 80, 50, "Avatar", "goto Avatar User", new Color(232, 176, 175), Color.GRAY, 16));
 		frameComponents.add(new Button("My Account", 580, 0, 80, 50, "My Account", "goto Account User", new Color(232, 176, 175), Color.GRAY, 16));
 		frameComponents.add(new Button("Logout", 680, 0, 80, 50, "Logout", "goto Logout User", new Color(232, 176, 175), Color.GRAY, 16));
 
@@ -88,6 +89,9 @@ public class ClientGuildUI  implements UIFrame{
 		String getAction = frameComponents.mouseSelect(mouseX, mouseY);
 		if (getAction.substring(0, 4).equals("Join")) {
 			HttpRequests.JoinGuild(currentUser, getAction.substring(5));
+		} 
+		else if (getAction.substring(0, 4).equals("goto")) {
+			return getAction;
 		}
 		else if (getAction.substring(0, 5).equals("Check")) {
 			for (Guild x : myGuilds) {
@@ -125,4 +129,8 @@ public class ClientGuildUI  implements UIFrame{
 		frameComponents.keyPress(c);
 	}
 
+	@Override
+	public void tick() {
+		frameComponents.tick();
+	}
 }

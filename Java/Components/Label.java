@@ -13,7 +13,7 @@ public class Label extends JPanel implements UIComponent{
 	 */
 	private static final long serialVersionUID = 2570709091349969835L;
 	private int xPos, yPos, width, height, fontSize = 12;
-	private int lowX, highX, lowY, highY;
+	private int lowX, highX, lowY, highY, lifeSpan = -1;
 	private String name, string = "";
 	private boolean hidden = false;
 
@@ -58,6 +58,22 @@ public class Label extends JPanel implements UIComponent{
 		string = getString;
 		fontSize = getSize;
 	}
+	
+	public Label(String getName, int getXPos, int getYPos, String getString, Boolean getFlag)
+	{
+		name = getName;
+		xPos = getXPos;
+		yPos = getYPos;
+		width = 150;
+		height = 30;
+		lowX = xPos;
+		highX = xPos+width;
+		lowY = yPos;
+		highY = yPos+height;
+		string = getString;
+		lifeSpan = 15;
+	}
+	
 	public void draw(Graphics g) 
 	{
 		g.setColor(Color.BLACK); 
@@ -89,5 +105,13 @@ public class Label extends JPanel implements UIComponent{
 	@Override
 	public boolean isActive() {
 		return false;
+	}
+
+	public int getLifeSpan() {
+		return lifeSpan;
+	}
+
+	public void setLifeSpan(int lifeSpan) {
+		this.lifeSpan = lifeSpan;
 	}
 }

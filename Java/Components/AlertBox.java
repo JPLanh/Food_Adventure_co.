@@ -19,10 +19,12 @@ import Components.UICompound;
 public class AlertBox implements UICompound{
 	GUIList compoundComponents = new GUIList();
 	int posx, posy, lowX, lowY, highX, highY; 
-	boolean alive = true;
+	boolean alive = true, confirm = false;
 	String string, name, action;
-	
-	public AlertBox(String getName, int getInitX, int getInitY, String getString, String getAction) {
+	private User user;
+
+	public AlertBox(String getName, int getInitX, int getInitY, String getString, String getAction, User getUser) {
+		user = getUser;
 		posx = getInitX;
 		posy = getInitY;
 		lowX = posx;
@@ -36,11 +38,29 @@ public class AlertBox implements UICompound{
 		compoundComponents.add(new Shape("SQUARE", Color.GRAY, posx, posy, 200, 100));
 		compoundComponents.add(new Label("Message", posx + 15, posy + 5, string));
 		compoundComponents.add(new TextField("Email", posx + 15, posy + 30, "Email"));
-		compoundComponents.add(new Button("Yes", posx +20, posy+70, 50, 25, "Yes", "Confirm Yes " + action));
-		compoundComponents.add(new Button("No", posx +120, posy+70, 50, 25, "No", "Confirm No " + action));
+		compoundComponents.add(new Button("Yes", posx +20, posy+70, 50, 25, "Submit", "Check Yes " + action));
+		compoundComponents.add(new Button("No", posx +120, posy+70, 50, 25, "Cancel", "Check No " + action));
+	}
+
+	public AlertBox(String getName, int getInitX, int getInitY, String getString, String getAction, User getUser, boolean messageGet) {
+		user = getUser;
+		posx = getInitX;
+		posy = getInitY;
+		lowX = posx;
+		highX = posx+200;
+		confirm = true;
+		lowY = posy;
+		highY = posy+100;
+		string = getString;
+		name = getName;
+		action = getAction;
+		compoundComponents.add(new Shape("SQUARE", Color.WHITE, posx, posy, 200, 100, true));
+		compoundComponents.add(new Shape("SQUARE", Color.GRAY, posx, posy, 200, 100));
+		compoundComponents.add(new Label("Message", posx + 15, posy + 5, string));
+		compoundComponents.add(new Button("Yes", posx +20, posy+70, 50, 25, "Submit", "Check Yes " + action));
+		compoundComponents.add(new Button("No", posx +120, posy+70, 50, 25, "Cancel", "Check No " + action));
 	}
 	
-
 	@Override
 	public void draw(Graphics g) {
 		compoundComponents.draw(g);
@@ -58,7 +78,6 @@ public class AlertBox implements UICompound{
 	}
 
 	public void keyPress(KeyEvent c) {
-		System.out.println(c.getKeyCode());
 		compoundComponents.keyPress(c);
 	}
 
@@ -86,8 +105,19 @@ public class AlertBox implements UICompound{
 	@Override
 	public String clickAction(int mouseX, int mouseY) {
 		String temp = compoundComponents.mouseSelect(mouseX, mouseY);
-		System.out.println("Inside: " + temp);
+		if (temp != null) {
+			String[] splitText = temp.split(" ");
+			if (splitText[0].equals("Check")) {
+				if (splitText[1].equals("Yes")) {
+					if (confirm) return "Confirm Yes " + action;
+					else return "Confirm Yes " + ((TextField)compoundComponents.get("Email")).getString() + " " + action;
+				} else if (splitText[1].equals("No")){
+					if (confirm) return "Confirm No " + action;
+					else return "Confirm No " + ((TextField)compoundComponents.get("Email")).getString() + " " + action;
+				}
+			} 
+		}
 		return temp;
-//		return compoundComponents.mouseSelect(mouseX, mouseY);
+		//		return compoundComponents.mouseSelect(mouseX, mouseY);
 	}
 }

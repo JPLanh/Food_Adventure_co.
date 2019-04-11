@@ -41,6 +41,7 @@ public class SignupUI implements UIFrame{
 		if (getAction != null) {
 			if (((TextField)frameComponents.get("Password")).getString().equals(((TextField)frameComponents.get("Confirm Password")).getString()))
 			return getAction + " " + ((TextField)frameComponents.get("User UID")).getString() + " " + ((TextField)frameComponents.get("Username")).getString() + " " + ((TextField)frameComponents.get("Password")).getString();
+			return getAction;
 		}
 		return null;
 	}

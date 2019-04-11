@@ -58,10 +58,12 @@ public class GUIList {
 	{
 		for (UIComponent x : listOfGui)
 		{
+			if (x instanceof AlertBox) {
+				((AlertBox) x).keyPress(keyPress);
+			}
 			if (x.isActive())
 			{
 				if (x instanceof TextField) ((TextField) x).keyPress(keyPress);
-				else if (x instanceof AlertBox) ((AlertBox) x).keyPress(keyPress);
 			}
 		}
 	}

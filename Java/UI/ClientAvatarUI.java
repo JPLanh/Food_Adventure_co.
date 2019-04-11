@@ -14,11 +14,26 @@ public class ClientAvatarUI  implements UIFrame{
 	GUIList frameComponents = new GUIList();
 	Avatar myAvatar;
 	User currentUser;
-	private String state = "";
+	private String state = "", notFound = "";
+	private boolean self = false;
 
 	ClientAvatarUI(User getUser){
 		currentUser = getUser;
+		self = true;
 		refreshFrame();
+	}
+
+	ClientAvatarUI(User getUser, String getAvatar){
+		currentUser = getUser;
+//		refreshFrame();
+		self = false;
+		myAvatar = HttpRequests.searchAvatar(getAvatar);
+		if (myAvatar == null) {
+			notFound = getAvatar;
+			state = "Not Found";
+		}
+		refreshFrame();
+
 	}
 
 	private void refreshFrame() {
@@ -34,12 +49,26 @@ public class ClientAvatarUI  implements UIFrame{
 		frameComponents.add(new Button("Logout", 680, 0, 80, 50, "Logout", "goto Logout User", new Color(232, 176, 175), Color.GRAY, 16));
 
 		if (myAvatar != null) {
-			frameComponents.add(new Label("Avatar Display Name", 50, 100, myAvatar.getName()));
-			frameComponents.add(new Button("Default Avatar", 45, 300, 100, 50, "Make Default", "Default Avatar", Color.WHITE, Color.GRAY, 16 ));
-			frameComponents.add(new Button("Remove Avatar", 45, 350, 100, 50, "Remove Avatar", "Remove Avatar", Color.WHITE, Color.GRAY, 16 ));
+			if (self) {
+				if (!myAvatar.isMain()) frameComponents.add(new Button("Default Avatar", 45, 300, 100, 50, "Make Default", "Default Avatar", Color.WHITE, Color.GRAY, 16 ));
+				frameComponents.add(new Button("Remove Avatar", 45, 350, 100, 50, "Remove Avatar", "Remove Avatar", Color.WHITE, Color.GRAY, 16 ));
+			}
+			frameComponents.add(new Label("Avatar Display Name", 250, 100, myAvatar.getName(), 16));
+			frameComponents.add(new Label("Avatar Display Level", 250, 100 + 30, "Level: " + myAvatar.getAttributes().get("Level").toString()));
+			frameComponents.add(new Label("Avatar Display Health", 250, 100 + 60, "Health: " + myAvatar.getAttributes().get("Health").toString()));				
+			int i = 0;
+			for (String x : myAvatar.getAttributes().keySet()) {
+				if (!x.equals("Level") && !x.equals("Health")) {
+					frameComponents.add(new Label("Avatar Display " + x, 250, 240 + 30*i, x+ ": " + myAvatar.getAttributes().get(x).toString()));				
+					i+=1;
+				}
+			}
+
 			frameComponents.add(new Button("Return", 45, 400, 100, 50, "Back", "Return", Color.WHITE, Color.GRAY, 16 ));
 		} else {
-			if (state.equals("")) {
+			if (state.equals("Not Found")) {
+				frameComponents.add(new Label("Avatar Display Name", 250, 100, notFound + " not found", 16));
+			} else if (state.equals("")) {
 				ArrayList<Avatar> listOfAvatars = HttpRequests.getAllUserAvatar(currentUser);
 				for (int i = 0; i < listOfAvatars.size(); i++) {
 					if (i == 0) {

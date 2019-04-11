@@ -79,13 +79,16 @@ public class GUIController extends JPanel implements MouseListener{
 				else if (takeAction[1].equals("Reward")) currentFrame = new ClientRefundUI(currentUser);
 				else if (takeAction[1].equals("Guild")) currentFrame = new ClientGuildUI(currentUser);
 				else if (takeAction[1].equals("Avatar")) currentFrame = new ClientAvatarUI(currentUser);
+				else if (takeAction[1].equals("Message")) currentFrame = new ClientMessageUI(currentUser);
 				else if (takeAction[1].equals("Item")) currentFrame = new ClientLoyaltyUI(currentUser);
+				else if (takeAction[1].equals("Battle")) currentFrame = new ClientBattleUI(currentUser);
 				else if (takeAction[1].equals("Terminate")) currentFrame = new LoginUI();
 				else if (takeAction[1].equals("Sign")) {
 					currentUser = HttpRequests.registerUser(Integer.parseInt(takeAction[3]), takeAction[4], takeAction[5]);
 					currentUser = HttpRequests.getUser(Integer.parseInt(takeAction[3]), takeAction[4], takeAction[5]);
 					currentFrame = new ClientHomeUI(currentUser);
 				}
+				else if (takeAction[1].equals("Search")) currentFrame = new ClientAvatarUI(currentUser, takeAction[3]);
 			}
 			else if (takeAction[0].equals("Activate"))
 			{

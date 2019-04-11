@@ -43,7 +43,7 @@ public class User implements JsonInterface{
 		dateOfBirth = json.get("dateOfBirth").getAsString();
 	}
 
-	User(int getUserUID, String getUserName,
+	public User(int getUserUID, String getUserName,
 			String getPassword, String getFirstName,
 			String getLastName, String getEmail, String getPhone,
 			String getDateOfBirth){

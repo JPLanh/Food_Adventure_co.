@@ -58,7 +58,21 @@ public class Label extends JPanel implements UIComponent{
 		string = getString;
 		fontSize = getSize;
 	}
-	
+
+	public Label(String getName, int getXPos, int getYPos, String getString, int getSize, int getLengthSize)
+	{
+		name = getName;
+		xPos = getXPos;
+		yPos = getYPos;
+		width = getLengthSize;
+		height = 30;
+		lowX = xPos;
+		highX = xPos+width;
+		lowY = yPos;
+		highY = yPos+height;
+		string = getString;
+		fontSize = getSize;
+	}
 	public Label(String getName, int getXPos, int getYPos, String getString, Boolean getFlag)
 	{
 		name = getName;

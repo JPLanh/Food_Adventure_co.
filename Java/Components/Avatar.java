@@ -10,20 +10,45 @@ public class Avatar implements JsonInterface {
 	private String _id, name;
 	private int hairStyle, hairColor, eyeColor, furColor, animal;
 	private boolean main = false;
-	HashMap<String, Integer> attributes;
-	
+	HashMap<String, Integer> attributes = new HashMap<String, Integer>();
+
 	public Avatar(JsonObject json){
-		main = json.get("main").getAsBoolean();
-		 JsonObject getJson = HttpRequests.toJsonArr(json.getAsJsonObject().get("avatarID").toString()).get(0).getAsJsonObject();
-		_id = getJson.get("_id").getAsString();
-		name = getJson.get("name").getAsString();
-		hairStyle = getJson.get("hairStyle").getAsInt();
-		hairColor = getJson.get("hairColor").getAsInt();
-		eyeColor = getJson.get("eyeColor").getAsInt();
-		furColor = getJson.get("furColor").getAsInt();
-		animal = getJson.get("animal").getAsInt();
+		if (json.get("main") != null) main = json.get("main").getAsBoolean();
+		if (json.getAsJsonObject().get("avatarID") != null) {
+			JsonObject getJson = HttpRequests.toJsonArr(json.getAsJsonObject().get("avatarID").toString()).get(0).getAsJsonObject();
+			_id = getJson.get("_id").getAsString();
+			name = getJson.get("name").getAsString();
+			hairStyle = getJson.get("hairStyle").getAsInt();
+			hairColor = getJson.get("hairColor").getAsInt();
+			eyeColor = getJson.get("eyeColor").getAsInt();
+			furColor = getJson.get("furColor").getAsInt();
+			animal = getJson.get("animal").getAsInt();
+			attributes.put("Strength", getJson.get("strength").getAsInt());
+			attributes.put("Agility", getJson.get("agility").getAsInt());
+			attributes.put("Intellect", getJson.get("intellect").getAsInt());
+			attributes.put("Dexterity", getJson.get("dexterity").getAsInt());
+			attributes.put("Stamina", getJson.get("stamina").getAsInt());
+			attributes.put("Health", getJson.get("health").getAsInt());
+			attributes.put("Level", getJson.get("level").getAsInt());
+		} else {
+			_id = json.get("_id").getAsString();
+			name = json.get("name").getAsString();
+			hairStyle = json.get("hairStyle").getAsInt();
+			hairColor = json.get("hairColor").getAsInt();
+			eyeColor = json.get("eyeColor").getAsInt();
+			furColor = json.get("furColor").getAsInt();
+			animal = json.get("animal").getAsInt();
+			attributes.put("Strength", json.get("strength").getAsInt());
+			attributes.put("Agility", json.get("agility").getAsInt());
+			attributes.put("Intellect", json.get("intellect").getAsInt());
+			attributes.put("Dexterity", json.get("dexterity").getAsInt());
+			attributes.put("Stamina", json.get("stamina").getAsInt());
+			attributes.put("Health", json.get("health").getAsInt());
+			attributes.put("Level", json.get("level").getAsInt());
+			
+		}
 	}
-	
+
 
 	public Avatar() {
 		hairStyle = 0;
@@ -35,15 +60,15 @@ public class Avatar implements JsonInterface {
 	public String get_id() {
 		return _id;
 	}
-	
+
 	public boolean isMain() {
 		return main;
 	}
-	
+
 	public void set_id(String _id) {
 		this._id = _id;
 	}
-	
+
 	public void setMain(boolean main) {
 		this.main = main;
 	}

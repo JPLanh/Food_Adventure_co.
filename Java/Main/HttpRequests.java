@@ -28,6 +28,118 @@ import Components.UserBattles;
 
 public class HttpRequests {
 
+	public static void unequipItem(String avatarName) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/unwear");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			String inputLine = "name=" + avatarName;
+
+			byte[] postData = inputLine.getBytes(StandardCharsets.UTF_8);
+			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+				wr.write(postData);
+				StringBuilder content;
+
+				try (BufferedReader in = new BufferedReader(
+						new InputStreamReader(con.getInputStream()))) {			
+					String line;
+					content = new StringBuilder();
+					while ((line = in.readLine()) != null) {
+						content.append(line);
+						content.append(System.lineSeparator());
+					}
+				}
+//				return new Reward();
+			} catch (IOException e) {
+				System.out.println("Server is off");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
+	
+	public static Reward getEquip(String avatarName) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/getWear");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			String inputLine = "name=" + avatarName;
+
+			byte[] postData = inputLine.getBytes(StandardCharsets.UTF_8);
+			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+				wr.write(postData);
+				StringBuilder content;
+
+				try (BufferedReader in = new BufferedReader(
+						new InputStreamReader(con.getInputStream()))) {			
+					String line;
+					content = new StringBuilder();
+					while ((line = in.readLine()) != null) {
+						content.append(line);
+						content.append(System.lineSeparator());
+					}
+				}
+//				return new Reward();
+				try {
+					return new Gson().fromJson(content.toString(), Reward.class);
+				} catch (Exception e) {
+					return null;
+				}
+			} catch (IOException e) {
+				System.out.println("Server is off");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
+	
+	public static void wearItem(String userUID, String itemUID) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/wear");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			String inputLine = "user=" + userUID;
+			inputLine += "&item=" + itemUID;
+
+			System.out.println(inputLine);
+			byte[] postData = inputLine.getBytes(StandardCharsets.UTF_8);
+			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+				wr.write(postData);
+				StringBuilder content;
+
+				try (BufferedReader in = new BufferedReader(
+						new InputStreamReader(con.getInputStream()))) {			
+					String line;
+					content = new StringBuilder();
+					while ((line = in.readLine()) != null) {
+						content.append(line);
+						content.append(System.lineSeparator());
+					}
+				}
+			} catch (IOException e) {
+				System.out.println("Server is off");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
+	
 	public static void leaveGuild(int userID, String guildName) {
 		URL url;
 		try {
@@ -52,6 +164,7 @@ public class HttpRequests {
 		} catch (Exception e) {
 		}
 	}
+
 	public static void sendMessage(String toUser, String fromUser, String subject, String bodyMsg) {
 		URL url;
 		try {
@@ -561,21 +674,21 @@ public class HttpRequests {
 			//			System.out.println(content.toString());
 			//			return new Gson().fromJson(content.toString(), Avatar.class);
 			JsonArray getJsonArr = toJsonArr(content.toString());
-//			System.out.println(getJsonArr.get(0));
-//			System.out.println(content.toString());
+			//			System.out.println(getJsonArr.get(0));
+			//			System.out.println(content.toString());
 			try {
 				ArrayList<UserBattles> allCard = new ArrayList<UserBattles>();
 				for (JsonElement x : getJsonArr)
 				{
 					if (getJsonArr != null) {
 						for (JsonElement y : x.getAsJsonArray()) {
-//						JsonArray getJsonArrAgain = x.getAsJsonArray();
+							//						JsonArray getJsonArrAgain = x.getAsJsonArray();
 
-//						System.out.println(getJsonArrAgain.get(0));
-						UserBattles temp = new UserBattles(y.getAsJsonObject());
-						//						Avatar temp = new Avatar(x.getAsJsonObject());
-						//Avatar temp = new Avatar((toJsonArr(x.getAsJsonObject().get("avatarID").toString()).get(0)).getAsJsonObject());
-						allCard.add(temp);
+							//						System.out.println(getJsonArrAgain.get(0));
+							UserBattles temp = new UserBattles(y.getAsJsonObject());
+							//						Avatar temp = new Avatar(x.getAsJsonObject());
+							//Avatar temp = new Avatar((toJsonArr(x.getAsJsonObject().get("avatarID").toString()).get(0)).getAsJsonObject());
+							allCard.add(temp);
 						}
 					}
 				}
@@ -589,587 +702,592 @@ public class HttpRequests {
 			return null;
 		}
 	}
-			public static Avatar searchAvatar(String avatarName) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/searchAvatar/" + avatarName);
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setRequestMethod("GET");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+	public static Avatar searchAvatar(String avatarName) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/searchAvatar/" + avatarName);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-					StringBuilder content;
-					try (BufferedReader in = new BufferedReader(
-							new InputStreamReader(con.getInputStream()))) {			
-						String line;
-						content = new StringBuilder();
-						while ((line = in.readLine()) != null) {
-							content.append(line);
-						}
-					}	
-//					JsonObject json = content.toString()
-					return new Avatar(new Gson().fromJson(content.toString(), JsonObject.class));
-//					return new Gson().fromJson(content.toString(), String.class);
-					//			JsonArray getJsonArr = toJsonArr(content.toString());
-					//			try {
-					//				ArrayList<Avatar> allCard = new ArrayList<Avatar>();
-					//				for (JsonElement x : getJsonArr)
-					//				{
-					//					if (getJsonArr != null) {
-					//						Avatar temp = new Avatar(x.getAsJsonObject());
-					//						//Avatar temp = new Avatar((toJsonArr(x.getAsJsonObject().get("avatarID").toString()).get(0)).getAsJsonObject());
-					//						allCard.add(temp);
-					//					}
-					//				}
-					//				return allCard;
-				} catch (Exception e) {
-					return null;
+			StringBuilder content;
+			try (BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()))) {			
+				String line;
+				content = new StringBuilder();
+				while ((line = in.readLine()) != null) {
+					content.append(line);
 				}
 			}	
-
-			public static ArrayList<Reward> getAllRewards() {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/rewards/");
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setRequestMethod("GET");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					StringBuilder content;
-					try (BufferedReader in = new BufferedReader(
-							new InputStreamReader(con.getInputStream()))) {			
-						String line;
-						content = new StringBuilder();
-						while ((line = in.readLine()) != null) {
-							content.append(line);
-						}
-					}	
-					JsonArray getJsonArr = toJsonArr(content.toString());
-					try {
-						ArrayList<Reward> allCard = new ArrayList<Reward>();
-						for (JsonElement x : getJsonArr)
-						{
-							if (getJsonArr != null) {
-								Reward temp = new Reward(x.getAsJsonObject());
-								allCard.add(temp);
-							}
-						}
-						return allCard;
-					} catch (Exception e) {
-						e.printStackTrace();
-						return null;
-					}
-				} catch (MalformedURLException e) {
-					System.out.println("ERROR");
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return null;
-			}
-
-			public static Reward searchReward(Reward getReward) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/adminCreateReward/" + URLEncoder.encode(getReward.getName(), "UTF-8"));
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setRequestMethod("GET");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					StringBuilder content;
-					try (BufferedReader in = new BufferedReader(
-							new InputStreamReader(con.getInputStream()))) {			
-						String line;
-						content = new StringBuilder();
-						while ((line = in.readLine()) != null) {
-							content.append(line);
-							content.append(System.lineSeparator());
-						}
-					}			
-					return new Gson().fromJson(content.toString(), Reward.class);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return null;
-			}
-
-			public static void purchaseReward(User getUser, String getReward) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/rewards/" + getUser.getEmail() + "/" + Integer.toString(getUser.getUserUID()) +"/"+ URLEncoder.encode(getReward, "UTF-8"));//getReward.replaceAll(" ", "<>"));
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setRequestMethod("GET");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					con.getInputStream();
-					//			byte[] postData = getReward.getRequest().getBytes(StandardCharsets.UTF_8);
-					//			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-					//				wr.write(postData);
-					//				StringBuilder content;
-					//
-					//				try (BufferedReader in = new BufferedReader(
-					//						new InputStreamReader(con.getInputStream()))) {			
-					//					String line;
-					//					content = new StringBuilder();
-					//					while ((line = in.readLine()) != null) {
-					//						content.append(line);
-					//						content.append(System.lineSeparator());
-					//					}
-					//				}
-					//			} catch (IOException e) {
-					//				System.out.println("Server is off");
-					//			}
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-			public static ArrayList<Reward> getAllMyRewards(User getUser) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/rewards/" + getUser.getUserUID());
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setRequestMethod("GET");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					StringBuilder content;
-					try (BufferedReader in = new BufferedReader(
-							new InputStreamReader(con.getInputStream()))) {			
-						String line;
-						content = new StringBuilder();
-						while ((line = in.readLine()) != null) {
-							content.append(line);
-						}
-					}	
-					JsonArray getJsonArr = toJsonArr(content.toString());
-					System.out.println(content.toString());
-					try {
-						ArrayList<Reward> allCard = new ArrayList<Reward>();
-						for (JsonElement x : getJsonArr)
-						{
-							if (getJsonArr != null) {
-								Reward temp = new Reward(x.getAsJsonObject(), true);
-								allCard.add(temp);
-							}
-						}
-						return allCard;
-					} catch (Exception e) {
-						e.printStackTrace();
-						return null;
-					}
-				} catch (MalformedURLException e) {
-					System.out.println("ERROR");
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return null;
-			}
-			public static void finishPurchase(User getUser, String getReward) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/rewards/" + Integer.toString(getUser.getUserUID()) +"/"+ getReward.replaceAll(" ", "<>"));
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setRequestMethod("POST");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					con.getInputStream();
-					//			byte[] postData = getReward.getRequest().getBytes(StandardCharsets.UTF_8);
-					//			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-					//				wr.write(postData);
-					//				StringBuilder content;
-					//
-					//				try (BufferedReader in = new BufferedReader(
-					//						new InputStreamReader(con.getInputStream()))) {			
-					//					String line;
-					//					content = new StringBuilder();
-					//					while ((line = in.readLine()) != null) {
-					//						content.append(line);
-					//						content.append(System.lineSeparator());
-					//					}
-					//				}
-					//			} catch (IOException e) {
-					//				System.out.println("Server is off");
-					//			}
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}	
-
-			public static void refundReward(User getUser, String rewardID) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/refunds/" + getUser.getEmail() + "/" + Integer.toString(getUser.getUserUID()) +"/"+ URLEncoder.encode(rewardID, "UTF-8"));
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setRequestMethod("GET");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					con.getInputStream();
-					//			byte[] postData = getReward.getRequest().getBytes(StandardCharsets.UTF_8);
-					//			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-					//				wr.write(postData);
-					//				StringBuilder content;
-					//
-					//				try (BufferedReader in = new BufferedReader(
-					//						new InputStreamReader(con.getInputStream()))) {			
-					//					String line;
-					//					content = new StringBuilder();
-					//					while ((line = in.readLine()) != null) {
-					//						content.append(line);
-					//						content.append(System.lineSeparator());
-					//					}
-					//				}
-					//			} catch (IOException e) {
-					//				System.out.println("Server is off");
-					//			}
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-			public static void admitGuild(String getUser, String searchGuild, String getAdmit) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/manageGuildMem/");
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setRequestMethod("POST");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					String inputLine = "&userName=" + getUser;
-					inputLine += "&guildName=" + searchGuild.substring(2);
-					inputLine += "&admittance=" + getAdmit;
-
-					byte[] postData = inputLine.getBytes(StandardCharsets.UTF_8);
-					try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-						wr.write(postData);
-						StringBuilder content;
-
-						try (BufferedReader in = new BufferedReader(
-								new InputStreamReader(con.getInputStream()))) {			
-							String line;
-							content = new StringBuilder();
-							while ((line = in.readLine()) != null) {
-								content.append(line);
-								content.append(System.lineSeparator());
-							}
-						}
-					} catch (IOException e) {
-						System.out.println("Server is off");
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}	
-
-			public static Guild createGuild(User getUser, String searchGuild) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/guild/" + Integer.toString(getUser.getUserUID()) +"/" + searchGuild.replaceAll(" ", "<>"));
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setRequestMethod("POST");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					StringBuilder content;
-					try (BufferedReader in = new BufferedReader(
-							new InputStreamReader(con.getInputStream()))) {			
-						String line;
-						content = new StringBuilder();
-						while ((line = in.readLine()) != null) {
-							content.append(line);
-							content.append(System.lineSeparator());
-						}
-					}			
-					return new Gson().fromJson(content.toString(), Guild.class);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return null;
-			}	
-
-			public static String JoinGuild(User getUser, String searchGuild) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/guild/" + Integer.toString(getUser.getUserUID()) +"/" + searchGuild.replaceAll(" ", "<>"));
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setRequestMethod("GET");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					StringBuilder content;
-					try (BufferedReader in = new BufferedReader(
-							new InputStreamReader(con.getInputStream()))) {			
-						String line;
-						content = new StringBuilder();
-						while ((line = in.readLine()) != null) {
-							content.append(line);
-							content.append(System.lineSeparator());
-						}
-					}			
-					return content.toString();
-					//			return new Gson().fromJson(content.toString(), Guild.class);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return null;
-			}	
-
-			public static void promoteUser(String getLeader, String getMember, String getGuild) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/promote/" + getLeader +"/" + getMember + "/" + getGuild.replaceAll(" ", "<>"));
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setRequestMethod("GET");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					StringBuilder content;
-					try (BufferedReader in = new BufferedReader(
-							new InputStreamReader(con.getInputStream()))) {			
-						String line;
-						content = new StringBuilder();
-						while ((line = in.readLine()) != null) {
-							content.append(line);
-							content.append(System.lineSeparator());
-						}
-					}			
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}	
-
-			public static ArrayList<User> getGuildMates(String getGuild) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/aGuild/" + getGuild.replaceAll(" ", "<>"));
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setRequestMethod("GET");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					StringBuilder content;
-					try (BufferedReader in = new BufferedReader(
-							new InputStreamReader(con.getInputStream()))) {			
-						String line;
-						content = new StringBuilder();
-						while ((line = in.readLine()) != null) {
-							content.append(line);
-							content.append(System.lineSeparator());
-						}
-					}			
-					JsonArray getJsonArr = toJsonArr(content.toString());
-					try {
-						ArrayList<User> allCard = new ArrayList<User>();
-						for (JsonElement x : getJsonArr)
-						{
-							if (getJsonArr != null) {
-								User temp = new User((toJsonArr(x.getAsJsonObject().get("member").toString()).get(0)).getAsJsonObject());
-								if (x.getAsJsonObject().get("leader").getAsBoolean()) temp.setLeader(true);
-								allCard.add(temp);
-							}
-						}
-						return allCard;
-					} catch (Exception e) {
-						e.printStackTrace();
-						return null;
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return null;
-			}	
-
-
-			public static ArrayList<Guild> getMyGuilds(User getUser) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/myGuild/" + Integer.toString(getUser.getUserUID()));
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setRequestMethod("GET");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					StringBuilder content;
-					try (BufferedReader in = new BufferedReader(
-							new InputStreamReader(con.getInputStream()))) {			
-						String line;
-						content = new StringBuilder();
-						while ((line = in.readLine()) != null) {
-							content.append(line);
-							content.append(System.lineSeparator());
-						}
-					}			
-
-					JsonArray getJsonArr = toJsonArr(content.toString());
-					try {
-						ArrayList<Guild> allCard = new ArrayList<Guild>();
-						for (JsonElement x : getJsonArr)
-						{
-							if (getJsonArr != null) {
-								Guild temp = new Guild((toJsonArr(x.getAsJsonObject().get("guild").toString()).get(0)).getAsJsonObject());
-								allCard.add(temp);
-							}
-						}
-						return allCard;
-					} catch (Exception e) {
-						e.printStackTrace();
-						return null;
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return null;
-			}	
-
-			public static ArrayList<Guild> getGuildList() {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/guild");
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setRequestMethod("GET");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					StringBuilder content;
-					try (BufferedReader in = new BufferedReader(
-							new InputStreamReader(con.getInputStream()))) {			
-						String line;
-						content = new StringBuilder();
-						while ((line = in.readLine()) != null) {
-							content.append(line);
-							content.append(System.lineSeparator());
-						}
-					}			
-
-					JsonArray getJsonArr = toJsonArr(content.toString());
-					try {
-						ArrayList<Guild> allCard = new ArrayList<Guild>();
-						for (JsonElement x : getJsonArr)
-						{
-							if (getJsonArr != null) {
-								Guild temp = new Guild(x.getAsJsonObject());
-								allCard.add(temp);
-							}
-						}
-						return allCard;
-					} catch (Exception e) {
-						e.printStackTrace();
-						return null;
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return null;
-			}	
-
-			public static void finishRefund(User getUser, String rewardID) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/refunds/" + Integer.toString(getUser.getUserUID()) +"/"+ rewardID);
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setRequestMethod("POST");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					con.getInputStream();
-					//			byte[] postData = getReward.getRequest().getBytes(StandardCharsets.UTF_8);
-					//			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-					//				wr.write(postData);
-					//				StringBuilder content;
-					//
-					//				try (BufferedReader in = new BufferedReader(
-					//						new InputStreamReader(con.getInputStream()))) {			
-					//					String line;
-					//					content = new StringBuilder();
-					//					while ((line = in.readLine()) != null) {
-					//						content.append(line);
-					//						content.append(System.lineSeparator());
-					//					}
-					//				}
-					//			} catch (IOException e) {
-					//				System.out.println("Server is off");
-					//			}
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			public static Reward updateReward(Reward getReward) {
-				URL url;
-				try {
-					url = new URL("http://35.235.118.188:3000/adminCreateReward/" + URLEncoder.encode(getReward.getName(), "UTF-8")); //getReward.getName().replaceAll(" ", "<>"));
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setRequestMethod("POST");
-					con.setRequestProperty("User-Agent", "Java client");
-					con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-					byte[] postData = getReward.getRequest().getBytes(StandardCharsets.UTF_8);
-					try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-						wr.write(postData);
-						StringBuilder content;
-
-						try (BufferedReader in = new BufferedReader(
-								new InputStreamReader(con.getInputStream()))) {			
-							String line;
-							content = new StringBuilder();
-							while ((line = in.readLine()) != null) {
-								content.append(line);
-								content.append(System.lineSeparator());
-							}
-						}
-					} catch (IOException e) {
-						System.out.println("Server is off");
-					}
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return null;
-			}
-
-			public static JsonElement userToJson(User getUser)
-			{
-				GsonBuilder builder = new GsonBuilder();
-				builder.setPrettyPrinting().serializeNulls();
-				Gson gson = builder.create();
-				return gson.toJsonTree(getUser, new TypeToken<User>() {}.getType());
-			}
-
-
-			public static JsonArray toJsonArr(String getResult) 
-			{
-				GsonBuilder builder = new GsonBuilder();
-				builder.setPrettyPrinting().serializeNulls();
-				Gson gson = builder.create();
-				try {
-					JsonArray getObj = gson.fromJson(getResult, JsonElement.class).getAsJsonArray();
-					return getObj;
-				} catch (IllegalStateException e) {
-					//			e.printStackTrace();
-					return null;
-				}
-			}
+			//					JsonObject json = content.toString()
+			return new Avatar(new Gson().fromJson(content.toString(), JsonObject.class));
+			//					return new Gson().fromJson(content.toString(), String.class);
+			//			JsonArray getJsonArr = toJsonArr(content.toString());
+			//			try {
+			//				ArrayList<Avatar> allCard = new ArrayList<Avatar>();
+			//				for (JsonElement x : getJsonArr)
+			//				{
+			//					if (getJsonArr != null) {
+			//						Avatar temp = new Avatar(x.getAsJsonObject());
+			//						//Avatar temp = new Avatar((toJsonArr(x.getAsJsonObject().get("avatarID").toString()).get(0)).getAsJsonObject());
+			//						allCard.add(temp);
+			//					}
+			//				}
+			//				return allCard;
+		} catch (Exception e) {
+			return null;
 		}
+	}	
+
+	public static ArrayList<Reward> getAllRewards() {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/rewards/");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			StringBuilder content;
+			try (BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()))) {			
+				String line;
+				content = new StringBuilder();
+				while ((line = in.readLine()) != null) {
+					content.append(line);
+				}
+			}	
+			JsonArray getJsonArr = toJsonArr(content.toString());
+			try {
+				ArrayList<Reward> allCard = new ArrayList<Reward>();
+				for (JsonElement x : getJsonArr)
+				{
+					if (getJsonArr != null) {
+						Reward temp = new Reward(x.getAsJsonObject());
+						allCard.add(temp);
+					}
+				}
+				return allCard;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		} catch (MalformedURLException e) {
+			System.out.println("ERROR");
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Reward searchReward(Reward getReward) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/adminCreateReward/" + URLEncoder.encode(getReward.getName(), "UTF-8"));
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			StringBuilder content;
+			try (BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()))) {			
+				String line;
+				content = new StringBuilder();
+				while ((line = in.readLine()) != null) {
+					content.append(line);
+					content.append(System.lineSeparator());
+				}
+			}			
+			return new Gson().fromJson(content.toString(), Reward.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void purchaseReward(User getUser, String getReward) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/rewards/" + getUser.getEmail() + "/" + Integer.toString(getUser.getUserUID()) +"/"+ URLEncoder.encode(getReward, "UTF-8"));//getReward.replaceAll(" ", "<>"));
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			con.getInputStream();
+			//			byte[] postData = getReward.getRequest().getBytes(StandardCharsets.UTF_8);
+			//			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+			//				wr.write(postData);
+			//				StringBuilder content;
+			//
+			//				try (BufferedReader in = new BufferedReader(
+			//						new InputStreamReader(con.getInputStream()))) {			
+			//					String line;
+			//					content = new StringBuilder();
+			//					while ((line = in.readLine()) != null) {
+			//						content.append(line);
+			//						content.append(System.lineSeparator());
+			//					}
+			//				}
+			//			} catch (IOException e) {
+			//				System.out.println("Server is off");
+			//			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static ArrayList<Reward> getAllMyRewards(User getUser) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/rewards/" + getUser.getUserUID());
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			StringBuilder content;
+			try (BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()))) {			
+				String line;
+				content = new StringBuilder();
+				while ((line = in.readLine()) != null) {
+					content.append(line);
+				}
+			}	
+			JsonArray getJsonArr = toJsonArr(content.toString());
+			try {
+				ArrayList<Reward> allCard = new ArrayList<Reward>();
+				for (JsonElement x : getJsonArr)
+				{
+					if (getJsonArr != null) {
+						Reward temp = new Reward(x.getAsJsonObject(), true);
+						allCard.add(temp);
+					}
+				}
+				return allCard;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		} catch (MalformedURLException e) {
+			System.out.println("ERROR");
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static void finishPurchase(User getUser, String getReward) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/rewards/" + Integer.toString(getUser.getUserUID()) +"/"+ getReward.replaceAll(" ", "<>"));
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			con.getInputStream();
+			//			byte[] postData = getReward.getRequest().getBytes(StandardCharsets.UTF_8);
+			//			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+			//				wr.write(postData);
+			//				StringBuilder content;
+			//
+			//				try (BufferedReader in = new BufferedReader(
+			//						new InputStreamReader(con.getInputStream()))) {			
+			//					String line;
+			//					content = new StringBuilder();
+			//					while ((line = in.readLine()) != null) {
+			//						content.append(line);
+			//						content.append(System.lineSeparator());
+			//					}
+			//				}
+			//			} catch (IOException e) {
+			//				System.out.println("Server is off");
+			//			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
+
+	public static void refundReward(User getUser, String rewardID) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/refunds/" + getUser.getEmail() + "/" + Integer.toString(getUser.getUserUID()) +"/"+ URLEncoder.encode(rewardID, "UTF-8"));
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			con.getInputStream();
+			//			byte[] postData = getReward.getRequest().getBytes(StandardCharsets.UTF_8);
+			//			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+			//				wr.write(postData);
+			//				StringBuilder content;
+			//
+			//				try (BufferedReader in = new BufferedReader(
+			//						new InputStreamReader(con.getInputStream()))) {			
+			//					String line;
+			//					content = new StringBuilder();
+			//					while ((line = in.readLine()) != null) {
+			//						content.append(line);
+			//						content.append(System.lineSeparator());
+			//					}
+			//				}
+			//			} catch (IOException e) {
+			//				System.out.println("Server is off");
+			//			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void admitGuild(String getUser, String searchGuild, String getAdmit) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/manageGuildMem/");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			String inputLine = "&userName=" + getUser;
+			inputLine += "&guildName=" + searchGuild.substring(2);
+			inputLine += "&admittance=" + getAdmit;
+
+			byte[] postData = inputLine.getBytes(StandardCharsets.UTF_8);
+			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+				wr.write(postData);
+				StringBuilder content;
+
+				try (BufferedReader in = new BufferedReader(
+						new InputStreamReader(con.getInputStream()))) {			
+					String line;
+					content = new StringBuilder();
+					while ((line = in.readLine()) != null) {
+						content.append(line);
+						content.append(System.lineSeparator());
+					}
+				}
+			} catch (IOException e) {
+				System.out.println("Server is off");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
+
+	public static Guild createGuild(User getUser, String searchGuild) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/guild/" + Integer.toString(getUser.getUserUID()) +"/" + searchGuild.replaceAll(" ", "<>"));
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			StringBuilder content;
+			try (BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()))) {			
+				String line;
+				content = new StringBuilder();
+				while ((line = in.readLine()) != null) {
+					content.append(line);
+					content.append(System.lineSeparator());
+				}
+			}			
+			return new Gson().fromJson(content.toString(), Guild.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
+
+	public static String JoinGuild(User getUser, String searchGuild) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/guild/" + Integer.toString(getUser.getUserUID()) +"/" + searchGuild.replaceAll(" ", "<>"));
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			StringBuilder content;
+			try (BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()))) {			
+				String line;
+				content = new StringBuilder();
+				while ((line = in.readLine()) != null) {
+					content.append(line);
+					content.append(System.lineSeparator());
+				}
+			}			
+			return content.toString();
+			//			return new Gson().fromJson(content.toString(), Guild.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
+
+	public static void promoteUser(String getLeader, String getMember, String getGuild) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/promote/" + getLeader +"/" + getMember + "/" + getGuild.replaceAll(" ", "<>"));
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			StringBuilder content;
+			try (BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()))) {			
+				String line;
+				content = new StringBuilder();
+				while ((line = in.readLine()) != null) {
+					content.append(line);
+					content.append(System.lineSeparator());
+				}
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
+
+	public static ArrayList<User> getGuildMates(String getGuild) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/aGuild/" + getGuild.replaceAll(" ", "<>"));
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			StringBuilder content;
+			try (BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()))) {			
+				String line;
+				content = new StringBuilder();
+				while ((line = in.readLine()) != null) {
+					content.append(line);
+					content.append(System.lineSeparator());
+				}
+			}	
+			System.out.println(content.toString());
+			JsonArray getJsonArr = toJsonArr(content.toString());
+			try {
+				ArrayList<User> allCard = new ArrayList<User>();
+				for (JsonElement x : getJsonArr)
+				{
+					if (getJsonArr != null) {
+						User temp = new User((toJsonArr(x.getAsJsonObject().get("member").toString()).get(0)).getAsJsonObject());
+						if (x.getAsJsonObject().get("leader").getAsBoolean()) temp.setLeader(true);
+						allCard.add(temp);
+					}
+				}
+				return allCard;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
+
+
+	public static ArrayList<Guild> getMyGuilds(User getUser) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/myGuild/" + Integer.toString(getUser.getUserUID()));
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			StringBuilder content;
+			try (BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()))) {			
+				String line;
+				content = new StringBuilder();
+				while ((line = in.readLine()) != null) {
+					content.append(line);
+					content.append(System.lineSeparator());
+				}
+			}			
+
+			JsonArray getJsonArr = toJsonArr(content.toString());
+			try {
+				ArrayList<Guild> allCard = new ArrayList<Guild>();
+				for (JsonElement x : getJsonArr)
+				{
+					if (getJsonArr != null) {
+						Guild temp = new Guild((toJsonArr(x.getAsJsonObject().get("guild").toString()).get(0)).getAsJsonObject());
+						allCard.add(temp);
+					}
+				}
+				return allCard;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
+
+	public static ArrayList<Guild> getGuildList() {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/guild");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			StringBuilder content;
+			try (BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()))) {			
+				String line;
+				content = new StringBuilder();
+				while ((line = in.readLine()) != null) {
+					content.append(line);
+					content.append(System.lineSeparator());
+				}
+			}			
+
+			JsonArray getJsonArr = toJsonArr(content.toString());
+			try {
+				ArrayList<Guild> allCard = new ArrayList<Guild>();
+				for (JsonElement x : getJsonArr)
+				{
+					if (getJsonArr != null) {
+						Guild temp = new Guild(x.getAsJsonObject());
+						allCard.add(temp);
+					}
+				}
+				return allCard;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
+
+	public static void finishRefund(User getUser, String rewardID) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/refunds/" + Integer.toString(getUser.getUserUID()) +"/"+ rewardID);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			con.getInputStream();
+			//			byte[] postData = getReward.getRequest().getBytes(StandardCharsets.UTF_8);
+			//			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+			//				wr.write(postData);
+			//				StringBuilder content;
+			//
+			//				try (BufferedReader in = new BufferedReader(
+			//						new InputStreamReader(con.getInputStream()))) {			
+			//					String line;
+			//					content = new StringBuilder();
+			//					while ((line = in.readLine()) != null) {
+			//						content.append(line);
+			//						content.append(System.lineSeparator());
+			//					}
+			//				}
+			//			} catch (IOException e) {
+			//				System.out.println("Server is off");
+			//			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+//	public static void wearItem(String rewardItem) {
+//		
+//	}
+
+	public static Reward updateReward(Reward getReward) {
+		URL url;
+		try {
+			url = new URL("http://35.235.118.188:3000/adminCreateReward/" + URLEncoder.encode(getReward.getName(), "UTF-8")); //getReward.getName().replaceAll(" ", "<>"));
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", "Java client");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			byte[] postData = getReward.getRequest().getBytes(StandardCharsets.UTF_8);
+			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+				wr.write(postData);
+				StringBuilder content;
+
+				try (BufferedReader in = new BufferedReader(
+						new InputStreamReader(con.getInputStream()))) {			
+					String line;
+					content = new StringBuilder();
+					while ((line = in.readLine()) != null) {
+						content.append(line);
+						content.append(System.lineSeparator());
+					}
+				}
+			} catch (IOException e) {
+				System.out.println("Server is off");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static JsonElement userToJson(User getUser)
+	{
+		GsonBuilder builder = new GsonBuilder();
+		builder.setPrettyPrinting().serializeNulls();
+		Gson gson = builder.create();
+		return gson.toJsonTree(getUser, new TypeToken<User>() {}.getType());
+	}
+
+
+	public static JsonArray toJsonArr(String getResult) 
+	{
+		GsonBuilder builder = new GsonBuilder();
+		builder.setPrettyPrinting().serializeNulls();
+		Gson gson = builder.create();
+		try {
+			JsonArray getObj = gson.fromJson(getResult, JsonElement.class).getAsJsonArray();
+			return getObj;
+		} catch (IllegalStateException e) {
+			//			e.printStackTrace();
+			return null;
+		}
+	}
+}

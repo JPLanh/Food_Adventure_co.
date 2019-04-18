@@ -37,37 +37,38 @@ public class ClientGuildUI  implements UIFrame{
 		frameComponents.add(new Button("My Account", 580, 0, 80, 50, "My Account", "goto Account User", new Color(232, 176, 175), Color.GRAY, 16));
 		frameComponents.add(new Button("Logout", 680, 0, 80, 50, "Logout", "goto Logout User", new Color(232, 176, 175), Color.GRAY, 16));
 
-		frameComponents.add(new Shape("SQUARE", Color.GRAY, 0, 100, 180, 400, true));
-		frameComponents.add(new Shape("SQUARE", Color.BLACK, 10, 110, 160, 175, true));
-		frameComponents.add(new Shape("SQUARE", Color.GRAY, 11, 111, 158, 173, true));
-
-		frameComponents.add(new Shape("SQUARE", Color.BLACK, 10, 305, 160, 175, true));
-		frameComponents.add(new Shape("SQUARE", Color.GRAY, 11, 306, 158, 173, true));
+		frameComponents.add(new Shape("SQUARE", Color.GRAY, 0, 100, 180, 450, true));
+		frameComponents.add(new Shape("SQUARE", Color.BLACK, 10, 110, 160, 50));
+		frameComponents.add(new Shape("SQUARE", Color.BLACK, 10, 180, 160, 360));
+//		frameComponents.add(new Shape("SQUARE", Color.GRAY, 11, 111, 158, 173, true));
+//
+//		frameComponents.add(new Shape("SQUARE", Color.BLACK, 10, 200, 160, 335, true));
+//		frameComponents.add(new Shape("SQUARE", Color.GRAY, 11, 306, 158, 233, true));
 
 		if (currentGuild != null) {
 			ArrayList<User> users = HttpRequests.getGuildMates(currentGuild.getName());
 			User leader;
-			frameComponents.add(new Label("Guild Name", 15, 130, currentGuild.getName() + " #" + Integer.toString(currentGuild.getRank()), 16));
-			frameComponents.add(new Label("Members", 15, 300, "Members", 16));
-			frameComponents.add(new Button("Leave Guild", 200, 500, 80, 50, "Leave Guild", "Leave Guild", new Color(232, 176, 175), Color.GRAY, 16));
+			frameComponents.add(new Label("Guild Name", 15, 120, currentGuild.getName() + " #" + Integer.toString(currentGuild.getRank()), 16));
+			frameComponents.add(new Label("Members", 15, 180, "Members", 16));
+			frameComponents.add(new Button("Leave Guild", 15, 435, 100, 50, "Leave Guild", "Leave Guild", Color.GRAY, Color.WHITE, 16));
 			for (int x = 0; x < users.size(); x++) {
 				if (state.equals("")) {
-					frameComponents.add(new Label(users.get(x).getUserName(), 15, 320 + (30*x), users.get(x).getUserName(), 16));
+					frameComponents.add(new Label(users.get(x).getUserName(), 15, 210 + (35*x), users.get(x).getUserName(), 16));
 					if (users.get(x).isLeader()) {
 						leader = users.get(x);
 						if (users.get(x).getUserName().equals(currentUser.getUserName())) 
-							frameComponents.add(new Button("Leader", 55, 500, 80, 50, "Modify Guild", "Change Leader", new Color(232, 176, 175), Color.GRAY, 16));
+							frameComponents.add(new Button("Leader", 55, 485, 80, 50, "Modify Guild", "Change Leader", Color.GRAY, Color.WHITE, 16));
 					}
 				} else if (state.equals("Change Leader")) {
-					frameComponents.add(new Button("Kick Member " + x, 200, 320 + (30*x), 80, 50, "Kick", "Kicking " + users.get(x).getUserName() + " "  + users.get(x).getUserUID(), new Color(232, 176, 175), Color.GRAY, 16));
-					frameComponents.add(new Button(users.get(x).getUserName(), 15, 320 + (30*x), 150, 30, users.get(x).getUserName(), "Promote " + users.get(x).getUserName() + " " + users.get(x).getUserUID(), new Color(232, 176, 175), Color.GRAY, 16));
+					frameComponents.add(new Button("Kick Member " + x, 185, 210 + (35*x), 80, 30, "Kick", "Kicking " + users.get(x).getUserName() + " "  + users.get(x).getUserUID(), Color.DARK_GRAY, Color.WHITE, 16));
+					frameComponents.add(new Button(users.get(x).getUserName(), 15, 210 + (35*x), 150, 30, users.get(x).getUserName(), "Promote " + users.get(x).getUserName() + " " + users.get(x).getUserUID(), Color.DARK_GRAY, Color.GRAY, 16));
 				}
 			}
 		} else {
 			if (state.equals("")) {
 				myGuilds = HttpRequests.getMyGuilds(currentUser);
-				frameComponents.add(new Button("New Guild", 20, 130, 120, 50, "New Guild", "Guild new", Color.GRAY, Color.WHITE, 16));
-				frameComponents.add(new Button("Join Guild", 20, 190, 120, 50, "Join Guild", "Guild join", Color.GRAY, Color.WHITE, 16));						
+				frameComponents.add(new Button("New Guild", 20, 220, 120, 50, "New Guild", "Guild new", Color.GRAY, Color.WHITE, 16));
+				frameComponents.add(new Button("Join Guild", 20, 280, 120, 50, "Join Guild", "Guild join", Color.GRAY, Color.WHITE, 16));						
 //				frameComponents.add(new Button("New Guild", 20, 130, 120, 50, "New Guild", "Guild new", new Color(232, 176, 175), Color.GRAY, 16));
 //				frameComponents.add(new Button("Join Guild", 20, 190, 120, 50, "Join Guild", "Guild join", new Color(232, 176, 175), Color.GRAY, 16));		
 				for (int i = 0; i < myGuilds.size(); i++) {
@@ -119,6 +120,7 @@ public class ClientGuildUI  implements UIFrame{
 				String leaderName = HttpRequests.JoinGuild(currentUser, getAction.substring(5));
 				leaderName = leaderName.split("\r")[0];
 				HttpRequests.sendMessage(leaderName, "FATco", currentUser.getUserName() + " wants to join " + getAction.substring(5) , "Dear " + leaderName + "\n\n" + currentUser.getUserName() + " would like to join the guild " + getAction.substring(5));
+				return "goto Guild User";
 			} 
 			else if (getAction.substring(0, 4).equals("goto")) {
 				return getAction;
@@ -126,7 +128,7 @@ public class ClientGuildUI  implements UIFrame{
 			else if (getAction.substring(0, 7).equals("Kicking")) {
 				if (!awaiting) {
 					String[] tempString = getAction.split(" ");
-					alertComponents.add(new AlertBox("Leave Guild", 200, 200, "Leave Guild?", "Kick "  + tempString[1] + " " + tempString[2], currentUser, false));
+					alertComponents.add(new AlertBox("Leave Guild", 200, 200, "Kick " + tempString[1] + "?", "Kick "  + tempString[1] + " " + tempString[2], currentUser, false));
 					awaiting = true;
 				}
 			}

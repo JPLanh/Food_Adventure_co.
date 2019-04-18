@@ -48,6 +48,7 @@ public class Button extends JPanel implements UIComponent{
 		lowY = yPos;
 		highY = yPos+getHeight;
 		string = getString;
+		action = getAction;
 		fontColor = getFontColor;
 		bkColor = getBKColor;
 		

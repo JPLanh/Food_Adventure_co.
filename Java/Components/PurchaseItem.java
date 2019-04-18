@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -101,9 +102,8 @@ public class PurchaseItem extends JPanel implements UIComponent{
 	public PurchaseItem(String getName, int getXPos, int getYPos, int getWidth, int getHeight, String getString, String getAction)
 	{
 		try {
-			image = ImageIO.read(new File("img/bluehoodie.png"));
+			image = ImageIO.read(new URL("http://35.235.118.188/img/" + getName.toLowerCase().replace(" ", "").replace("%", "%25")+".png"));
 			img = resize(image, getHeight, getWidth);
-//			img = new BufferedImage(getWidth, getHeight, BufferedImage.TYPE_INT_RGB);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

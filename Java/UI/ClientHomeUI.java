@@ -66,9 +66,12 @@ public class ClientHomeUI  implements UIFrame{
 					if (splitAction[3].equals("Search")) {
 						//						HttpRequests.purchaseReward(currentUser, getPurchase.getName());
 						awaiting = false;
-						alertComponents.remove("Search");
+						alertComponents.remove("Search Avatar");
 						return "goto Search avatar " + splitAction[2];
 					}
+				} else if (splitAction[1].equals("No")) {
+					awaiting = false;
+					alertComponents.remove("Search Avatar");
 				}
 			}
 			if (splitAction[0].equals("view")) {		

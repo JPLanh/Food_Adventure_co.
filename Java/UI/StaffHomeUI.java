@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 import Components.*;
 import Main.HttpRequests;
 
-public class AdminHomeUI  implements UIFrame{
+public class StaffHomeUI  implements UIFrame{
 
 	HttpRequests http = new HttpRequests();
 	GUIList frameComponents = new GUIList();
@@ -15,20 +15,17 @@ public class AdminHomeUI  implements UIFrame{
 	Reward searchedReward;
 	String status;
 
-	AdminHomeUI(){
+	StaffHomeUI(){
 		refreshFrame();
 	}
 
 	private void refreshFrame() {
 		frameComponents = new GUIList();
-		frameComponents.add(new Shape("SQUARE", Color.WHITE, 0, 50, 800, 550, true));
-		frameComponents.add(new TextField("User UID", 125, 10, "User UID"));
-		frameComponents.add(new Button("Search", 5, 10, 80, 40, "Search User", "Search User", new Color(232, 176, 175), Color.GRAY, 16));
-		frameComponents.add(new TextField("Reward", 500, 10, "Reward"));
-		frameComponents.add(new Button("New Reward", 405, 10, 80, 40, "Reward", "Reward New", new Color(232, 176, 175), Color.GRAY, 16));
-//		frameComponents.add(new TextField("Customer ID", 250, 150, "Customer ID"));
-//		frameComponents.add(new TextField("Currency", 250, 200, "Currency"));
-//		frameComponents.add(new Button("Exchange", 250, 250, 80, 40, "Buy", "Exchange", Color.GRAY , Color.WHITE, 16));
+		frameComponents.add(new TextField("Customer ID", 275, 150, "Customer ID"));
+		frameComponents.add(new TextField("Currency", 275, 200, "Currency"));
+		frameComponents.add(new Button("Exchange", 250, 250, 200, 40, "Reward", "Exchange", Color.GRAY , Color.WHITE, 16));
+		
+		frameComponents.add(new Button("New Customer", 250, 350, 200, 40, "New Customer", "New Customer", Color.GRAY , Color.WHITE, 16));
 		if (searchedUser != null) {
 			frameComponents.add(new Label("Username", 50, 100, searchedUser.getUserName(), 16));			
 			frameComponents.add(new Label("Coins", 50, 125, "Coins: " + searchedUser.getCoins(), 16));
@@ -129,23 +126,23 @@ public class AdminHomeUI  implements UIFrame{
 	@Override
 	public String clickAction(int mouseX, int mouseY) {
 		String getAction = frameComponents.mouseSelect(mouseX, mouseY);
-		System.out.println(getAction);
 		if (getAction != null) {
-
 			if (getAction.equals("Search User")) {
 				searchedUser = HttpRequests.searchUser(Integer.parseInt(((TextField)frameComponents.get("User UID")).getString()));
 				searchedReward = null;
 			}
+			else if (getAction.equals("New Customer")) {
+				return "goto Create User";
+			}
 			else if (getAction.equals("Exchange")) {
 				User upUser = HttpRequests.searchUser(Integer.parseInt(((TextField)frameComponents.get("Customer ID")).getString()));
-//				upUser.setCoins(upUser.getCoins() + );
+				upUser.setCoins(upUser.getCoins() + ((int)(10*Double.parseDouble(((TextField)frameComponents.get("Currency")).getString()))));
 				HttpRequests.updateUser(upUser);
 			}
 			else if (getAction.equals("Reward New"))
 			{
 				status = null;
 				searchedReward = HttpRequests.searchReward(new Reward(((TextField)frameComponents.get("Reward")).getString()));
-				System.out.println(searchedReward);
 				if (searchedReward.getType() != null) {
 					if (searchedReward.getType().equals("Item")) status = "Item";
 					if (searchedReward.getType().equals("Coupon")) status = "Coupon";

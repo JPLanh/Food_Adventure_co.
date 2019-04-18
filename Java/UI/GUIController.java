@@ -28,7 +28,7 @@ public class GUIController extends JPanel implements MouseListener{
 	public GUIController(){
 		addMouseListener(this);
 		setBackground(new Color(232, 176, 175));
-		currentFrame = new LoginUI();
+		currentFrame = new AdminHomeUI();
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent event) {
@@ -106,7 +106,7 @@ public class GUIController extends JPanel implements MouseListener{
 						currentFrame = new ClientAvatarUI(currentUser);
 				} else if (takeAction.length == 3) {
 					if (takeAction[2].equals("User"))
-						currentFrame = new LoginUI();
+						currentFrame = new StaffHomeUI();
 				}
 			}
 		}

@@ -136,7 +136,7 @@ public class ClientMessageUI  implements UIFrame{
 		msgComponents = new GUIList();
 		if (currentMsg == null) {
 			if (!compose) {
-				msgComponents.add(new Button("New Message", 50, 75, 150, 50, "New Messages", "New Messages", new Color(232, 176, 175), Color.GRAY, 16));
+				msgComponents.add(new Button("New Message", 50, 75, 150, 50, "New Messages", "New Messages", Color.WHITE, Color.BLACK, 16));
 //				msgComponents.add(new Button("Read Message", 210, 75, 150, 50, "Read Messages", "Test Send", new Color(232, 176, 175), Color.GRAY, 16));
 				ArrayList<Message> getMsgs = HttpRequests.getMessages(currentUser.getUserName());
 				//		ArrayList<Message> getMsgs = HttpRequests.getMessages(currentUser.getUserName());

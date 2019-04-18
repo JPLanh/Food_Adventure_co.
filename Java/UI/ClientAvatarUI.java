@@ -52,7 +52,24 @@ public class ClientAvatarUI  implements UIFrame{
 			if (self) {
 				if (!myAvatar.isMain()) frameComponents.add(new Button("Default Avatar", 45, 300, 100, 50, "Make Default", "Default Avatar", Color.WHITE, Color.GRAY, 16 ));
 				frameComponents.add(new Button("Remove Avatar", 45, 350, 100, 50, "Remove Avatar", "Remove Avatar", Color.WHITE, Color.GRAY, 16 ));
+				frameComponents.add(new Label("Current Equip", 450, 100, "Current Equipment", 16));
+				Reward getReward = HttpRequests.getEquip(myAvatar.getName());
+				if (getReward == null) {
+					ArrayList<Reward> tempReward = HttpRequests.getAllMyRewards(currentUser);
+					ArrayList<Reward> newReward = new ArrayList<Reward>();
+					for (int x = 0; x < tempReward.size(); x++) {
+							if (tempReward.get(x).getRedeemedDate() == null && tempReward.get(x).getType().equals("Item")) {
+								newReward.add(tempReward.get(x));
+							}
+					}
+					for (int x = 0; x < newReward.size(); x++) {
+						frameComponents.add(new Button("Equip Item", 450, 130 + 32*x, 150, 30, newReward.get(x).getName(), "wear " + newReward.get(x).getRedemptionID(), Color.GRAY, Color.WHITE));					
+					}
+				} else {
+					frameComponents.add(new PurchaseItem(getReward.getName(), 450 , 175, 150, 150, "", "Unequip"));
+				}
 			}
+			myAvatar = HttpRequests.searchAvatar(myAvatar.getName());
 			frameComponents.add(new Label("Avatar Display Name", 250, 100, myAvatar.getName(), 16));
 			frameComponents.add(new Label("Avatar Display Level", 250, 100 + 30, "Level: " + myAvatar.getAttributes().get("Level").toString()));
 			frameComponents.add(new Label("Avatar Display Health", 250, 100 + 60, "Health: " + myAvatar.getAttributes().get("Health").toString()));				
@@ -63,7 +80,6 @@ public class ClientAvatarUI  implements UIFrame{
 					i+=1;
 				}
 			}
-
 			frameComponents.add(new Button("Return", 45, 400, 100, 50, "Back", "Return", Color.WHITE, Color.GRAY, 16 ));
 		} else {
 			if (state.equals("Not Found")) {
@@ -74,31 +90,31 @@ public class ClientAvatarUI  implements UIFrame{
 					if (i == 0) {
 						frameComponents.add(new Shape("CIRCLE", Color.GRAY, 50, 350, 100, 50, true));
 						frameComponents.add(new Label(listOfAvatars.get(i).getName(), 50, 300, listOfAvatars.get(i).getName(), 16));
-						frameComponents.add(new Button("Select Avatar " + i, 50, 400, 80, 50, "Select Avatar", "Select Avatar " + i, Color.WHITE, Color.GRAY, 16));
+						frameComponents.add(new Button("Select Avatar " + i, 50, 400, 80, 50, "Select Avatar", "Select Avatar " + listOfAvatars.get(i).getName(), Color.WHITE, Color.GRAY, 16));
 						if (listOfAvatars.get(i).isMain()) 
 							frameComponents.add(new Label("Avatar " + i + " default", 50, 250, "Default", 16));
 					} else if (i == 1) {
 						frameComponents.add(new Shape("CIRCLE", Color.GRAY, 180, 300, 100, 50, true));
 						frameComponents.add(new Label(listOfAvatars.get(i).getName(), 180, 250, listOfAvatars.get(i).getName(), 16));
-						frameComponents.add(new Button("Select Avatar " + i, 180, 350, 80, 50, "Select Avatar", "Select Avatar " + i, Color.WHITE, Color.GRAY, 16));
+						frameComponents.add(new Button("Select Avatar " + i, 180, 350, 80, 50, "Select Avatar", "Select Avatar " + listOfAvatars.get(i).getName(), Color.WHITE, Color.GRAY, 16));
 						if (listOfAvatars.get(i).isMain()) 
 							frameComponents.add(new Label("Avatar " + i + " default", 180, 200, "Default", 16));
 					} else if (i == 2) {
 						frameComponents.add(new Shape("CIRCLE", Color.GRAY, 310, 350, 100, 50, true));
 						frameComponents.add(new Label(listOfAvatars.get(i).getName(), 300, 300, listOfAvatars.get(i).getName(), 16));
-						frameComponents.add(new Button("Select Avatar " + i, 310, 400, 80, 50, "Select Avatar", "Select Avatar " + i, Color.WHITE, Color.GRAY, 16));
+						frameComponents.add(new Button("Select Avatar " + i, 310, 400, 80, 50, "Select Avatar", "Select Avatar " + listOfAvatars.get(i).getName(), Color.WHITE, Color.GRAY, 16));
 						if (listOfAvatars.get(i).isMain()) 
 							frameComponents.add(new Label("Avatar " + i + " default", 310, 250, "Default", 16));
 					} else if (i == 3) {
 						frameComponents.add(new Shape("CIRCLE", Color.GRAY, 440, 300, 100, 50, true));
 						frameComponents.add(new Label(listOfAvatars.get(i).getName(), 440, 250, listOfAvatars.get(i).getName(), 16));
-						frameComponents.add(new Button("Select Avatar " + i, 440, 350, 80, 50, "Select Avatar", "Select Avatar " + i, Color.WHITE, Color.GRAY, 16));
+						frameComponents.add(new Button("Select Avatar " + i, 440, 350, 80, 50, "Select Avatar", "Select Avatar " + listOfAvatars.get(i).getName(), Color.WHITE, Color.GRAY, 16));
 						if (listOfAvatars.get(i).isMain()) 
 							frameComponents.add(new Label("Avatar " + i + " default", 440, 200, "Default", 16));
 					} else if (i == 4) {
 						frameComponents.add(new Shape("CIRCLE", Color.GRAY, 570, 350, 100, 50, true));
 						frameComponents.add(new Label(listOfAvatars.get(i).getName(), 570, 300, listOfAvatars.get(i).getName(), 16));
-						frameComponents.add(new Button("Select Avatar " + i, 570, 400, 80, 50, "Select Avatar", "Select Avatar " + i, Color.WHITE, Color.GRAY, 16));
+						frameComponents.add(new Button("Select Avatar " + i, 570, 400, 80, 50, "Select Avatar", "Select Avatar " + listOfAvatars.get(i).getName(), Color.WHITE, Color.GRAY, 16));
 						if (listOfAvatars.get(i).isMain()) 
 							frameComponents.add(new Label("Avatar " + i + " default", 570, 250, "Default", 16));
 					}
@@ -183,12 +199,16 @@ public class ClientAvatarUI  implements UIFrame{
 				if (getAction.substring(5).equals("Fur Color")) myAvatar.setFurColor((myAvatar.getFurColor()+1)%10);
 				if (getAction.substring(5).equals("Animal")) myAvatar.setAnimal((myAvatar.getAnimal()+1)%10);
 			} else if (takeAction[0].equals("Select")) {
-				ArrayList<Avatar> listOfAvatars = HttpRequests.getAllUserAvatar(currentUser);
-				myAvatar = listOfAvatars.get(Integer.parseInt(takeAction[2]));
+				System.out.println(takeAction[2]);
+				myAvatar = HttpRequests.searchAvatar(takeAction[2]);
 				refreshFrame();
 			}
 			else if (takeAction[0].equals("Return")) {
 				myAvatar = null;
+				refreshFrame();
+			}
+			else if (takeAction[0].equals("Unequip")) {
+				HttpRequests.unequipItem(myAvatar.getName());
 				refreshFrame();
 			}
 			else if (takeAction[0].equals("Default")) {
@@ -198,6 +218,11 @@ public class ClientAvatarUI  implements UIFrame{
 			else if (takeAction[0].equals("Remove")) {
 				HttpRequests.deleteAvatar(myAvatar.getName());
 				myAvatar = null;
+				refreshFrame();
+			}
+			else if (takeAction[0].equals("wear")) {
+				System.out.println(takeAction[1]);
+				HttpRequests.wearItem(myAvatar.getName(), takeAction[1]);
 				refreshFrame();
 			}
 		}

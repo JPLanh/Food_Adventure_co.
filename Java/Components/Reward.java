@@ -10,6 +10,7 @@ public class Reward implements JsonInterface{
 	private int coin, diamond, tier, strength, agility, intellect, stamina, dexterity, health, discount;
 
 	public Reward(JsonObject json){
+		redemptionID = json.get("_id").getAsString();
 		name = json.get("name").getAsString();
 		coin = json.get("coin").getAsInt();
 		tier = json.get("tier").getAsInt();

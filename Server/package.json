@@ -1,0 +1,20 @@
+{
+  "name": "foodadventureco",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "js-cookie": "^2.2.0",
+    "mongoose": "^5.4.6"
+  },
+  "devDependencies": {
+    "demon": "^1.4.4"
+  }
+}

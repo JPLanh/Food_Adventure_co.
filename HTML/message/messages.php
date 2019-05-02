@@ -101,7 +101,7 @@ function admitGuild(getUser, getGuild, decision){
 			alert("Finish");
 		},
 		error: function(result){
-			alert(JSON.stringify(result));
+			alert("Guild Member Admitted");
 			window.location = "http://35.235.118.188/message/messages.php";
 		},
 	});

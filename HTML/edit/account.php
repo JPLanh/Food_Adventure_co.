@@ -51,7 +51,7 @@ $(document).ready(function(){
 	document.getElementById("usernamein").innerHTML = test.userName;
 	document.getElementById("fullname").innerHTML = test.firstName + " " + test.lastName;
 	document.getElementById("emailin").innerHTML = test.email;
-	document.getElementById("phonein").innerHTML = test.phone;
+	document.getElementById("phonein").value = test.phone;
 	document.getElementById("dob").innerHTML = test.dateOfBirth;
 	//document.getElementById("UserID").innerHTML = test.userUID;
 	
@@ -62,6 +62,54 @@ $(document).ready(function(){
   <link href="account.css" rel="stylesheet">
 </head>
 <script type="text/JavaScript">
+
+function changePassword()
+{
+	var check1=prompt("Would you like to change your password? Please enter your current password");
+	var test;
+	$.ajax({
+		type: "GET",
+		crossDomain: true,
+		url: "http://35.235.118.188:3000/htmlUsers",
+		dataType: 'json',
+		async: false,
+		data: {userName: $("#username").val(), password: check1},
+		success: function(result){
+			var check2=prompt("What would you like your new password to be?");
+			$.ajax({
+				type: "post",
+				crossDomain: true,
+				url: "http://35.235.118.188:3000/password",
+				dataType: 'json',
+				async: false,
+				data: { userUID: $("#userUID").val(),
+					userName: $("#username").val(), 
+					password: check2,
+					firstName: $("#firstName").val(), 
+					lastName: $("#lastName").val(),
+					email: $("#emailin").val(), 
+					phone: $("#phonein").val(),
+					dateOfBirth: $("#dateOfBirth").val(),
+					coins: $("#coins").val(),
+					tier: $("#tier").val(),
+					diamonds: $("#diamonds").val()
+					},
+				success: function(result){
+					test = JSON.parse(JSON.stringify(result));						
+				},
+				error: function(result){
+					alert("Changes Submitted");
+					document.cookie = "password=" + check2;
+				}
+			});
+			test = JSON.parse(JSON.stringify(result));						
+		},
+		error: function(result){
+			alert(JSON.stringify(result));
+			alert($("#username").val() + ', ' + check1);
+		}
+	});
+}
 
 function terminateAccount()
 {
@@ -216,7 +264,7 @@ function terminateAccount()
         </div>
         <div class="col-sm-8">
           <h4>E-mail</h4>
-	  <input type="text" id="emailin" placeholder=<?php echo $_COOKIE['email'];?> />
+	  <input type="text" id="emailin" value="*******" />
         </div>
         <div class="col-sm-2">
           <br>
@@ -230,7 +278,7 @@ function terminateAccount()
     </div>
       <div class="col-sm-8">
         <h4>Phone</h4>
-	  <input type="text" id="phonein" placeholder=<?php echo $_COOKIE['phone'];?> />
+	  <input type="text" id="phonein" value= />
       </div>
       <div class="col-sm-2">
         <br>
@@ -258,6 +306,7 @@ function terminateAccount()
   </div>
 
     <button type="button" onclick="terminateAccount()">Terminate account</button>
+    <button type="button" onclick="changePassword()">Change Password</button>
 </div>
 
 </body>

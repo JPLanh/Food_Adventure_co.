@@ -21,7 +21,7 @@
   <input type="hidden" id="password" value="<?php echo $_COOKIE['password'];?>"/>
 
 <!-- load the cookie and search the user right on load -->
-	<script>
+<script>
 	$(document).ready(function(){
 	var test;
 		$.ajax({
@@ -56,7 +56,7 @@
 	document.getElementById("username").value = test.userName;
 
 	});
-	</script>
+</script>
 
   <!-- Custom styles for this template -->
   <link href="style.css" rel="stylesheet">
@@ -64,8 +64,62 @@
 </head>
 <body>
 
-  <script type="text/JavaScript">
-
+<script type="text/JavaScript">
+$(document).ready(function(){
+	var test2;
+	$.ajax({
+		type: "GET",
+		crossDomain: true,
+		url: "http://35.235.118.188:3000/rewards",
+		dataType: 'json',
+		async: false,
+		success: function(result){
+			test2 = JSON.parse(JSON.stringify(result));
+		},
+		error: function(result){
+			alert(JSON.stringify(result));
+		}
+	});
+	document.getElementById("mainFrame").innerHTML = '<div class="row"><div class="col-sm-12"><div class="panel panel-default text-left"><div class="panel-body"><p contenteditable="true"></p><h4>Newest Reward</h4><ul class="list-group">';
+	$.each(test2, function(index, eachReward){
+//		document.getElementById("mainFrame").innerHTML += '<div class="row"><div class="col-sm-12"><div class="panel panel-default text-left"><div class="panel-body"><p contenteditable="true"><h4>Latest Rewards</h4><ul class="list-group">';
+		if (index <= 5){
+			document.getElementById("mainFrame").innerHTML += '<li class="list-group-item">' + eachReward.name + '<div><img src="/img/coin.png" class="img-circle" height="30" width="30" alt="Coin Currency">' + eachReward.coin + '</div></li>';
+		}	
+	});
+	document.getElementById("mainFrame").innerHTML += '</ul></div></div></div></div>';
+});
+/*
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-default text-left">
+            <div class="panel-body">
+              <p contenteditable="true">
+                <input type="image" src="/img/location_picker.png" width="15" height="15" />
+                Location: Long Beach, CA
+              </p>
+              <br>
+              <h4>Top Coupons Near You!</h4>
+              <ul class="list-group">
+                <li
+                  class="list-group-item">Pizza x Two: Free Drink with Pizza
+                  <div><img src="/img//coin.png" class="img-circle" height="30" width="30" alt="Coin Currency">8,000<button type="button" onclick="redeemCoupon()"class="btn btn-success" style="margin-left: auto; display: block;">Redeem</button></div>
+                </li>
+                <li
+                  class="list-group-item">Sura: Free Appetizer
+                  <div><img src="/img/coin.png" class="img-circle" height="30" width="30" alt="Coin Currency">9,000<button type="button" onclick="redeemCoupon()"class="btn btn-success" style="margin-left: auto; display: block;">Redeem</button></div>
+                </li>
+                <li
+                  class="list-group-item">LooseLeaf: 10% Off Regular Drink
+                  <div><img src="/img/coin.png" class="img-circle" height="30" width="30" alt="Coin Currency">5,500<button type="button" onclick="confirmPurchase()"class="btn btn-success" style="margin-left: auto; display: block;">Redeem</button></div>
+                </li>
+              </ul>
+              <a href="../shop/shop.php">View more coupons</a>
+            </div>
+          </div>
+        </div>
+	</div>
+ */
   function redeemCoupon()
   {
   	var check1=confirm("Are you sure you want to redeem this coupon?");

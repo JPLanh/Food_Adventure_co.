@@ -93,11 +93,13 @@ function createGuild(){
 			success: function(result){
 				if (result.responseText == "Guild Exists"){
 					alert("Guild already exists, try a new name");
-				} else {
+				} else if (result.responseText == "Guild Created"){
 					alert("You are now the founders of " + document.getElementById("Guild Name").value);
 					window.location = "http://35.235.118.188/guild/guild.php";					
 
-				}	
+				} else if (result.responseText == "Insufficient Diamonds"){
+					alert("Insufficient Diamonds");
+				}		
 			},
 			error: function(result){
 				if (result.responseText == "Guild Created"){
@@ -105,6 +107,8 @@ function createGuild(){
 					window.location = "http://35.235.118.188/guild/guild.php";					
 				} else if (result.responseText == "Guild Exists"){
 					alert("Guild already exists, try a new name");
+				} else if (result.responseText == "Insufficient Diamonds"){
+					alert("Insufficient Diamonds");
 				}	
 			},
 		});
@@ -116,7 +120,8 @@ function newGuild(){
 	{
 		document.getElementById("Main Panel").innerHTML = '<h3> New Guild </h3>';
 		document.getElementById("Main Panel").innerHTML += '<input type="text" id="Guild Name" placeHolder="Guild Name"/>';
-		document.getElementById("Main Panel").innerHTML += '<button type="button" onclick="createGuild()">Create Guild</button>';
+		document.getElementById("Main Panel").innerHTML += '<button type="button" onclick="createGuild()">Create Guild</button><br>';
+		document.getElementById("Main Panel").innerHTML += 'Note: It cost 1 Diamond to create a new Guild';
 	});
 }
 
@@ -141,7 +146,7 @@ function joinGuild(){
 		document.getElementById("Main Panel").innerHTML = '<h3> Join Guild </h3>';
 		
 		$.each(test2, function(index, value) {
-			document.getElementById("Main Panel").innerHTML +=  '<div class="col-sm-4"><div class="panel panel-success"><div class="panel-heading">' + value.name + '#' + value.rank + ' </div>' +
+			document.getElementById("Main Panel").innerHTML +=  '<div class="col-sm-3"><div class="panel panel-success"><div class="panel-heading">' + value.name + '#' + value.rank + ' </div>' +
 				'<div class="panel-body"><img src="../img/diamondpile3.png" height="500" width="500" class="img-responsive" alt="Image"></div>' +
 				'<div class="panel-footer"> members: ' + value.members + ' <button type="button" onclick="requestGuild(\'' + value.name + '\')"class="btn btn-success" style="margin-left: auto; display: block;">Join Guild</button></div></div></div>';
 		});	

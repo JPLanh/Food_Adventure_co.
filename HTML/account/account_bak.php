@@ -47,13 +47,6 @@
 	document.cookie = "coins=" + test.coins;
 	document.cookie = "tier=" + test.tier;
 	document.cookie = "diamonds=" + test.diamonds;
-	document.getElementById("UserID").innerHTML = test.userUID;
-	document.getElementById("fullName").innerHTML = test.firstName + " " + test.lastName;
-	document.getElementById("UserName").innerHTML = test.userName;
-	document.getElementById("email").innerHTML = test.email;
-	document.getElementById("PhoneGet").innerHTML = test.phone;
-	document.getElementById("DOB").innerHTML = test.dateOfBirth;
-//	document.getElementById("username").value = test.userName;
 	//document.getElementById("UserID").innerHTML = test.userUID;
 	
 	});
@@ -109,7 +102,7 @@ function editAccount(){
         </div>
         <div class="col-sm-8">
           <h4>User UID</h4>
-	  <p id="UserID"></p>
+	  <p id="UserID"><?php echo $_COOKIE['userUID'];?></p>
         </div>
         <div class="col-sm-2">
           <!--<img src="../im/editicon.png" alt="group" width="40px" />-->
@@ -124,8 +117,8 @@ function editAccount(){
 
         </div>
         <div class="col-sm-8">
-          <h4>User Name</h4>
-	  <p id="UserName"></p>
+          <h4>Name</h4>
+	  <p><?php echo $_COOKIE['username'];?></p>
         </div>
         <div class="col-sm-2">
           <br>
@@ -142,7 +135,7 @@ function editAccount(){
         </div>
         <div class="col-sm-8">
           <h4>Name</h4>
-	  <p id="fullName"></p>
+	  <p><?php echo $_COOKIE['firstName'];?> <?php echo $_COOKIE['lastName'];?></p>
         </div>
         <div class="col-sm-2">
           <br>
@@ -157,7 +150,7 @@ function editAccount(){
         </div>
         <div class="col-sm-8">
           <h4>E-mail</h4>
-          <p id="email">*******</p>
+          <p><?php echo $_COOKIE['email'];?></p>
         </div>
         <div class="col-sm-2">
           <br>
@@ -171,7 +164,7 @@ function editAccount(){
     </div>
       <div class="col-sm-8">
         <h4>Phone</h4>
-	<p id="PhoneGet"></p>
+	<p><?php echo $_COOKIE['phone'];?></p>
       </div>
       <div class="col-sm-2">
         <br>
@@ -186,7 +179,7 @@ function editAccount(){
       </div>
       <div class="col-sm-8">
         <h4>Date of Birth</h4>
-	<p id="DOB"></p>
+	<p><?php echo $_COOKIE['dateOfBirth'];?></p>
       </div>
       <div class="col-sm-2">
         <br>

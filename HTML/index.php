@@ -75,7 +75,7 @@
 		<input type="text" id="userName" placeholder="username"/>
 	        <input type="password" id="password" placeholder="password"/>
 		<input type="button" id="submit" value="submit">
-	        <p class="message">Not registered? <a href="../register.php">Create an account</a></p>
+	        <p class="message">Not registered? <a href="../register.php">Register an account</a></p>
 	</p>
     </div>
   </div>

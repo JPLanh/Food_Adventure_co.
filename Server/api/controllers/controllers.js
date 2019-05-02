@@ -362,12 +362,13 @@ exports.htmlFindUser = function(req, res){
 }
 
 exports.htmlUpdateUser = function(req, res){
-
+	console.log(req.body);
 	User.findOne({ 'userUID': req.body.userUID }, function(err, foundUser){
 		if (req.body.phone !== null && req.body.phone !== '') foundUser.phone = req.body.phone;
 		if (req.body.email !== null && req.body.email !== '') foundUser.email = req.body.email;
 		User.findOneAndUpdate({ 'userUID': req.body.userUID }, foundUser, {upsert:true, overwrite:true}, function(err, updateUser)
 		{
+			console.log("Updated");
 			if (err) res.send(err);
 			res.json(updateUser);
 		});
@@ -473,15 +474,22 @@ exports.createGuild = function(req, res){
 	guilds.findOne({ 'name': guildGet }, function(err, foundGuild)
 	{
 		if (foundGuild == null){
-			var new_guild = new guilds({ 'name': guildGet, 'members': 1 });
-			new_guild.save(function(err, newGuild){
-				User.findOne({ 'userUID': req.params.UserUID }, function(err, foundUser){
-					var new_member = new guildMembers({ 'member': foundUser, 'guild': newGuild, 'dateAdmitted': Date.now(), 'leader': true });
-					new_member.save(function(err, newMember){
-//						res.send("Done");
-						res.json(newGuild);
+			User.findOne({ 'userUID': req.params.UserUID }, function(err, foundUser){
+				if (foundUser.diamonds > 0){
+					var new_guild = new guilds({ 'name': guildGet, 'members': 1 });
+					new_guild.save(function(err, newGuild){
+						var new_member = new guildMembers({ 'member': foundUser, 'guild': newGuild, 'dateAdmitted': Date.now(), 'leader': true });
+						new_member.save(function(err, newMember){
+							foundUser.diamonds -= 1;
+							User.findOneAndUpdate({ 'userUID': req.params.UserUID }, foundUser, {usert:true, overwrite:true}, function(err, updateUser){});
+							res.send("Guild Created");
+//							res.send("Done");
+							//res.json(newGuild);
+						});
 					});
-				});
+				} else {
+					res.send("Insufficient Diamonds");
+				}
 			});
 		} else {
 			res.send("Guild Exists");

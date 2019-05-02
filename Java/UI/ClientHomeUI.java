@@ -44,9 +44,9 @@ public class ClientHomeUI  implements UIFrame{
 		frameComponents.add(new Label("Coins", 55, 335, Integer.toString(currentUser.getCoins()), 14));
 		frameComponents.add(new Label("Diamonds", 15, 360, "Diamonds", 16));
 		frameComponents.add(new Label("Diamonds", 55, 375, Integer.toString(currentUser.getDiamonds()), 14));
-		frameComponents.add(new Button("Message", 15, 410, 100, 35, "Messages", "goto Message User", Color.GRAY, Color.WHITE, 16));
-		frameComponents.add(new Button("Other Avatar", 15, 450, 100, 35, "Other Avatars", "view other avatar", Color.GRAY, Color.WHITE, 16));
-		frameComponents.add(new Button("Battles", 15, 490, 100, 35, "Check Battles", "goto Battle User", Color.GRAY, Color.WHITE, 16));
+		frameComponents.add(new Button("Message", 20, 410, 120, 35, "Messages", "goto Message User", Color.GRAY, Color.WHITE, 16));
+		frameComponents.add(new Button("Other Avatar", 30, 450, 120, 35, "Other Avatars", "view other avatar", Color.GRAY, Color.WHITE, 16));
+		frameComponents.add(new Button("Battles", 30, 490, 120, 35, "Check Battles", "goto Battle User", Color.GRAY, Color.WHITE, 16));
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class ClientHomeUI  implements UIFrame{
 			}
 			if (splitAction[0].equals("view")) {		
 				if (!awaiting) {
-					alertComponents.add(new AlertBox("Search Avatar", 200, 200, "What avatar do you want to search for?", "Search", currentUser));
+					alertComponents.add(new AlertBox("Search Avatar", 200, 200, "What avatar do you want to search for?", "Search", currentUser, "Search Avatar"));
 					awaiting = true;
 				}
 			} 

@@ -50,14 +50,14 @@ public class ClientGuildUI  implements UIFrame{
 			User leader;
 			frameComponents.add(new Label("Guild Name", 15, 120, currentGuild.getName() + " #" + Integer.toString(currentGuild.getRank()), 16));
 			frameComponents.add(new Label("Members", 15, 180, "Members", 16));
-			frameComponents.add(new Button("Leave Guild", 15, 435, 100, 50, "Leave Guild", "Leave Guild", Color.GRAY, Color.WHITE, 16));
+			frameComponents.add(new Button("Leave Guild", 50, 435, 100, 50, "Leave Guild", "Leave Guild", Color.GRAY, Color.WHITE, 16));
 			for (int x = 0; x < users.size(); x++) {
 				if (state.equals("")) {
 					frameComponents.add(new Label(users.get(x).getUserName(), 15, 210 + (35*x), users.get(x).getUserName(), 16));
 					if (users.get(x).isLeader()) {
 						leader = users.get(x);
 						if (users.get(x).getUserName().equals(currentUser.getUserName())) 
-							frameComponents.add(new Button("Leader", 55, 485, 80, 50, "Modify Guild", "Change Leader", Color.GRAY, Color.WHITE, 16));
+							frameComponents.add(new Button("Leader", 50, 485, 100, 50, "Modify Guild", "Change Leader", Color.GRAY, Color.WHITE, 16));
 					}
 				} else if (state.equals("Change Leader")) {
 					frameComponents.add(new Button("Kick Member " + x, 185, 210 + (35*x), 80, 30, "Kick", "Kicking " + users.get(x).getUserName() + " "  + users.get(x).getUserUID(), Color.DARK_GRAY, Color.WHITE, 16));

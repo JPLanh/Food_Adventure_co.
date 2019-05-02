@@ -10,10 +10,12 @@ import Main.HttpRequests;
 public class StaffHomeUI  implements UIFrame{
 
 	HttpRequests http = new HttpRequests();
+	GUIList alertComponents = new GUIList();
 	GUIList frameComponents = new GUIList();
 	User searchedUser;
 	Reward searchedReward;
 	String status;
+	boolean awaiting = false;
 
 	StaffHomeUI(){
 		refreshFrame();
@@ -21,11 +23,14 @@ public class StaffHomeUI  implements UIFrame{
 
 	private void refreshFrame() {
 		frameComponents = new GUIList();
+		frameComponents.add(new Shape("SQUARE", Color.GRAY, 199, 129, 307, 265, true));
+		frameComponents.add(new Shape("SQUARE", Color.WHITE, 200, 130, 305, 175, true));
+		frameComponents.add(new Shape("SQUARE", Color.WHITE, 200, 325, 305, 50, true));
 		frameComponents.add(new TextField("Customer ID", 275, 150, "Customer ID"));
 		frameComponents.add(new TextField("Currency", 275, 200, "Currency"));
 		frameComponents.add(new Button("Exchange", 250, 250, 200, 40, "Reward", "Exchange", Color.GRAY , Color.WHITE, 16));
-		
-		frameComponents.add(new Button("New Customer", 250, 350, 200, 40, "New Customer", "New Customer", Color.GRAY , Color.WHITE, 16));
+
+		frameComponents.add(new Button("New Customer", 250, 330, 200, 40, "New Customer", "New Customer", Color.GRAY , Color.WHITE, 16));
 		if (searchedUser != null) {
 			frameComponents.add(new Label("Username", 50, 100, searchedUser.getUserName(), 16));			
 			frameComponents.add(new Label("Coins", 50, 125, "Coins: " + searchedUser.getCoins(), 16));
@@ -99,7 +104,7 @@ public class StaffHomeUI  implements UIFrame{
 					frameComponents.add(new Label("Reward Tier", 50, 275, "Current Tier: " + + searchedReward.getTier(), 16));			
 					frameComponents.add(new TextField("New Tier Value", 50, 300, "New Tier Value"));
 					frameComponents.add(new Button("Set Tier", 225, 300, 80, 30, "Set", "Set Reward Tier", new Color(232, 176, 175), Color.GRAY, 16));		
-					
+
 					frameComponents.add(new Button("Upload Image", 225, 375, 80, 30, "Upload", "Upload Image", new Color(232, 176, 175), Color.GRAY, 16));		
 					frameComponents.add(new Label("Image", 50, 375, "", 16));			
 
@@ -121,117 +126,147 @@ public class StaffHomeUI  implements UIFrame{
 	@Override
 	public void draw(Graphics g) {
 		frameComponents.draw(g);
+		alertComponents.draw(g);
 	}
 
 	@Override
 	public String clickAction(int mouseX, int mouseY) {
-		String getAction = frameComponents.mouseSelect(mouseX, mouseY);
+		String getAction = alertComponents.mouseSelect(mouseX, mouseY);
+		if (getAction == null) getAction = frameComponents.mouseSelect(mouseX, mouseY);
 		if (getAction != null) {
-			if (getAction.equals("Search User")) {
-				searchedUser = HttpRequests.searchUser(Integer.parseInt(((TextField)frameComponents.get("User UID")).getString()));
-				searchedReward = null;
-			}
-			else if (getAction.equals("New Customer")) {
-				return "goto Create User";
-			}
-			else if (getAction.equals("Exchange")) {
-				User upUser = HttpRequests.searchUser(Integer.parseInt(((TextField)frameComponents.get("Customer ID")).getString()));
-				upUser.setCoins(upUser.getCoins() + ((int)(10*Double.parseDouble(((TextField)frameComponents.get("Currency")).getString()))));
-				HttpRequests.updateUser(upUser);
-			}
-			else if (getAction.equals("Reward New"))
-			{
-				status = null;
-				searchedReward = HttpRequests.searchReward(new Reward(((TextField)frameComponents.get("Reward")).getString()));
-				if (searchedReward.getType() != null) {
-					if (searchedReward.getType().equals("Item")) status = "Item";
-					if (searchedReward.getType().equals("Coupon")) status = "Coupon";
-				}
-				searchedUser = null;
-			}
-			else if (getAction.equals("Set Reward Coin")) {
-				searchedReward.setCoin(searchedReward.getCoin() + Integer.parseInt(((TextField)frameComponents.get("New Coins Value")).getString()));
-			}
-			else if (getAction.equals("Set as Item")) {
-				searchedReward.setType("Item");
-			}
-			else if (getAction.equals("Set as Coupon")) {
-				searchedReward.setType("Coupon");
-			}
-			else if (getAction.equals("Set Reward Discount")) {
-				searchedReward.setDiscount(Integer.parseInt(((TextField)frameComponents.get("Discount")).getString()));
-			}
-			else if (getAction.equals("Set Absolute Type")) {
-				searchedReward.setDiscountType("Dollar");
-			}
-			else if (getAction.equals("Set Percent Type")) {
-				searchedReward.setDiscountType("Percent");
-			}
-			else if (getAction.equals("Set Reward Diamond")) {
-				searchedReward.setDiamond(searchedReward.getDiamond() + Integer.parseInt(((TextField)frameComponents.get("New Diamond Value")).getString()));
-			}
-			else if (getAction.equals("Set Reward Tier")) {
-				searchedReward.setTier(searchedReward.getTier() + Integer.parseInt(((TextField)frameComponents.get("New Tier Value")).getString()));
-			}
-			else if (getAction.equals("Set Reward Strength")) {
-				searchedReward.setStrength(searchedReward.getStrength() + Integer.parseInt(((TextField)frameComponents.get("Strength")).getString()));
-			}
-			else if (getAction.equals("Set Reward Agility")) {
-				searchedReward.setAgility(searchedReward.getAgility() + Integer.parseInt(((TextField)frameComponents.get("Agility")).getString()));
-			}
-			else if (getAction.equals("Set Reward Intellect")) {
-				searchedReward.setIntellect(searchedReward.getIntellect() + Integer.parseInt(((TextField)frameComponents.get("Intellect")).getString()));
-			}
-			else if (getAction.equals("Set Reward Dexterity")) {
-				searchedReward.setDexterity(searchedReward.getDexterity() + Integer.parseInt(((TextField)frameComponents.get("Dexterity")).getString()));
-			}
-			else if (getAction.equals("Set Reward Stamina")) {
-				searchedReward.setStamina(searchedReward.getStamina() + Integer.parseInt(((TextField)frameComponents.get("Stamina")).getString()));
-			}
-			else if (getAction.equals("Set Reward Health")) {
-				searchedReward.setHealth(searchedReward.getHealth() + Integer.parseInt(((TextField)frameComponents.get("Health")).getString()));
-			}
-			else if (getAction.equals("Increase Coin")) {
-				searchedUser.setCoins(searchedUser.getCoins() + Integer.parseInt(((TextField)frameComponents.get("Coins Value")).getString()));
-			}
-			else if (getAction.equals("Decrease Coin")) {
-				searchedUser.setCoins(searchedUser.getCoins() - Integer.parseInt(((TextField)frameComponents.get("Coins Value")).getString()));
-
-			}
-			else if (getAction.equals("Increase Diamond")) {
-				searchedUser.setDiamonds(searchedUser.getDiamonds() + Integer.parseInt(((TextField)frameComponents.get("Diamond Value")).getString()));			
-			}
-			else if (getAction.equals("Decrease Diamond")) {
-				searchedUser.setDiamonds(searchedUser.getDiamonds() - Integer.parseInt(((TextField)frameComponents.get("Diamond Value")).getString()));
-
-			}
-			else if (getAction.equals("Increase Tier")) {
-				searchedUser.setTier(searchedUser.getTier() + 1);			
-			}
-			else if (getAction.equals("Decrease Tier")) {
-				searchedUser.setTier(searchedUser.getTier() - 1);
-
-			} 
-			else if (getAction.equals("Submit Item")) {
-				searchedReward.setType("Item");
-				HttpRequests.updateReward(searchedReward);			
-			} 
-			else if (getAction.equals("Submit Coupon")) {
-				searchedReward.setType("Coupon");		
-			}
-			else if (getAction.equals("Submit")) {
-				if (searchedUser != null)
-					HttpRequests.updateUser(searchedUser);
-				if (searchedReward != null) {
-					HttpRequests.updateReward(searchedReward);	
+			String[] takeAction = getAction.split(" ");
+			if (takeAction[0].equals("Confirm")) {
+				if (takeAction[1].equals("Yes")) {
+					if (takeAction[2].equals("Not")) {
+						alertComponents.remove("Warning");
+						awaiting = false;
+					}
 				}
 			}
-			else if (getAction.equals("Activate")) {
-				return getAction;
+			if (!awaiting) {
+				if (getAction.equals("Search User")) {
+					searchedUser = HttpRequests.searchUser(Integer.parseInt(((TextField)frameComponents.get("User UID")).getString()));
+					searchedReward = null;
+				}
+				else if (getAction.equals("New Customer")) {
+					return "goto Create User";
+				}
+				else if (getAction.equals("Exchange")) {
+					//				System.out.println(Integer.parseInt(((TextField)frameComponents.get("Customer ID")).getString()));
+					try {
+						User upUser = HttpRequests.searchUser(Integer.parseInt(((TextField)frameComponents.get("Customer ID")).getString()));
+						if (upUser == null) {
+							if (!awaiting) {
+								alertComponents.add(new AlertBox("Warning", 200, 200, "User not found", "Not Found"));
+								awaiting = true;
+							}
+						} else {
+								upUser.setCoins(upUser.getCoins() + ((int)(10*Double.parseDouble(((TextField)frameComponents.get("Currency")).getString()))));
+								HttpRequests.updateUser(upUser);
+						}
+					} catch (NumberFormatException e) {
+						if (!awaiting) {
+							alertComponents.add(new AlertBox("Warning", 200, 200, "Invalid Customer", "Not Found"));
+							awaiting = true;
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				else if (getAction.equals("Reward New"))
+				{
+					status = null;
+					searchedReward = HttpRequests.searchReward(new Reward(((TextField)frameComponents.get("Reward")).getString()));
+					if (searchedReward.getType() != null) {
+						if (searchedReward.getType().equals("Item")) status = "Item";
+						if (searchedReward.getType().equals("Coupon")) status = "Coupon";
+					}
+					searchedUser = null;
+				}
+				else if (getAction.equals("Set Reward Coin")) {
+					searchedReward.setCoin(searchedReward.getCoin() + Integer.parseInt(((TextField)frameComponents.get("New Coins Value")).getString()));
+				}
+				else if (getAction.equals("Set as Item")) {
+					searchedReward.setType("Item");
+				}
+				else if (getAction.equals("Set as Coupon")) {
+					searchedReward.setType("Coupon");
+				}
+				else if (getAction.equals("Set Reward Discount")) {
+					searchedReward.setDiscount(Integer.parseInt(((TextField)frameComponents.get("Discount")).getString()));
+				}
+				else if (getAction.equals("Set Absolute Type")) {
+					searchedReward.setDiscountType("Dollar");
+				}
+				else if (getAction.equals("Set Percent Type")) {
+					searchedReward.setDiscountType("Percent");
+				}
+				else if (getAction.equals("Set Reward Diamond")) {
+					searchedReward.setDiamond(searchedReward.getDiamond() + Integer.parseInt(((TextField)frameComponents.get("New Diamond Value")).getString()));
+				}
+				else if (getAction.equals("Set Reward Tier")) {
+					searchedReward.setTier(searchedReward.getTier() + Integer.parseInt(((TextField)frameComponents.get("New Tier Value")).getString()));
+				}
+				else if (getAction.equals("Set Reward Strength")) {
+					searchedReward.setStrength(searchedReward.getStrength() + Integer.parseInt(((TextField)frameComponents.get("Strength")).getString()));
+				}
+				else if (getAction.equals("Set Reward Agility")) {
+					searchedReward.setAgility(searchedReward.getAgility() + Integer.parseInt(((TextField)frameComponents.get("Agility")).getString()));
+				}
+				else if (getAction.equals("Set Reward Intellect")) {
+					searchedReward.setIntellect(searchedReward.getIntellect() + Integer.parseInt(((TextField)frameComponents.get("Intellect")).getString()));
+				}
+				else if (getAction.equals("Set Reward Dexterity")) {
+					searchedReward.setDexterity(searchedReward.getDexterity() + Integer.parseInt(((TextField)frameComponents.get("Dexterity")).getString()));
+				}
+				else if (getAction.equals("Set Reward Stamina")) {
+					searchedReward.setStamina(searchedReward.getStamina() + Integer.parseInt(((TextField)frameComponents.get("Stamina")).getString()));
+				}
+				else if (getAction.equals("Set Reward Health")) {
+					searchedReward.setHealth(searchedReward.getHealth() + Integer.parseInt(((TextField)frameComponents.get("Health")).getString()));
+				}
+				else if (getAction.equals("Increase Coin")) {
+					searchedUser.setCoins(searchedUser.getCoins() + Integer.parseInt(((TextField)frameComponents.get("Coins Value")).getString()));
+				}
+				else if (getAction.equals("Decrease Coin")) {
+					searchedUser.setCoins(searchedUser.getCoins() - Integer.parseInt(((TextField)frameComponents.get("Coins Value")).getString()));
+
+				}
+				else if (getAction.equals("Increase Diamond")) {
+					searchedUser.setDiamonds(searchedUser.getDiamonds() + Integer.parseInt(((TextField)frameComponents.get("Diamond Value")).getString()));			
+				}
+				else if (getAction.equals("Decrease Diamond")) {
+					searchedUser.setDiamonds(searchedUser.getDiamonds() - Integer.parseInt(((TextField)frameComponents.get("Diamond Value")).getString()));
+
+				}
+				else if (getAction.equals("Increase Tier")) {
+					searchedUser.setTier(searchedUser.getTier() + 1);			
+				}
+				else if (getAction.equals("Decrease Tier")) {
+					searchedUser.setTier(searchedUser.getTier() - 1);
+
+				} 
+				else if (getAction.equals("Submit Item")) {
+					searchedReward.setType("Item");
+					HttpRequests.updateReward(searchedReward);			
+				} 
+				else if (getAction.equals("Submit Coupon")) {
+					searchedReward.setType("Coupon");		
+				}
+				else if (getAction.equals("Submit")) {
+					if (searchedUser != null)
+						HttpRequests.updateUser(searchedUser);
+					if (searchedReward != null) {
+						HttpRequests.updateReward(searchedReward);	
+					}
+				}
+				else if (getAction.equals("Activate")) {
+					return getAction;
+				}
+				refreshFrame();
+				return "Admin Frame";
+				//		else return frameComponents.mouseSelect(mouseX, mouseY);
 			}
-			refreshFrame();
-			return "Admin Frame";
-			//		else return frameComponents.mouseSelect(mouseX, mouseY);
 		}
 		return null;
 	}

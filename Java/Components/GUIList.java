@@ -54,18 +54,70 @@ public class GUIList {
 		return null;
 	}
 	
+	/*
+	 * 		TextField tempField = null;
+		TextField firstField = null;
+		boolean flag = false;
+		for (UIComponent x : listOfGui)
+		{
+			if (x instanceof TextField) {
+				{
+					if (firstField == null) firstField = (TextField)x;
+					if (tempField != null) {
+						tempField.activeToggle(false);
+						((TextField) x).activeToggle(true);
+						tempField = null;
+						break;
+					} 
+					else 
+					{ 
+						if (x.isActive()) 
+						{
+							if (keyPress.getKeyCode() == 9) tempField = (TextField) x;
+							else ((TextField) x).keyPress(keyPress);
+						}
+					}
+				}
+			}
+		}
+		if (tempField != null) {
+			tempField.activeToggle(false);
+			firstField.activeToggle(true);
+		} 
+	 */
 	public void keyPress(KeyEvent keyPress)
 	{
+		 	TextField tempField = null;
+			TextField firstField = null;
+			boolean flag = false;
 		for (UIComponent x : listOfGui)
 		{
 			if (x instanceof AlertBox) {
 				((AlertBox) x).keyPress(keyPress);
 			}
-			if (x.isActive())
+			if (x instanceof TextField)
 			{
-				if (x instanceof TextField) ((TextField) x).keyPress(keyPress);
+				if (firstField == null) firstField = (TextField)x;
+				if (tempField != null) {
+					tempField.activeToggle(false);
+					((TextField) x).activeToggle(true);
+					tempField = null;
+					break;
+				} 
+				else 
+				{ 
+					if (x.isActive()) 
+					{
+						if (keyPress.getKeyCode() == 9) tempField = (TextField) x;
+						else ((TextField) x).keyPress(keyPress);
+					}
+				}
 			}
 		}
+		if (tempField != null) {
+			tempField.activeToggle(false);
+			firstField.activeToggle(true);
+		} 
 	}
 
 	public void remove(String componentName){

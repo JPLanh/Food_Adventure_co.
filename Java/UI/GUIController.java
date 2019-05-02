@@ -29,6 +29,7 @@ public class GUIController extends JPanel implements MouseListener{
 		addMouseListener(this);
 		setBackground(new Color(232, 176, 175));
 		currentFrame = new AdminHomeUI();
+		setFocusTraversalKeysEnabled(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent event) {

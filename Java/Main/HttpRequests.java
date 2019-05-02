@@ -383,6 +383,8 @@ public class HttpRequests {
 					content.append(line);
 					content.append(System.lineSeparator());
 				}
+			} catch (Exception e) {
+				return null;
 			}
 			return new Gson().fromJson(content.toString(), User.class);
 		} catch (Exception e) {

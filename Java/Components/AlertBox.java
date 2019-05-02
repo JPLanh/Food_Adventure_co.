@@ -23,7 +23,7 @@ public class AlertBox implements UICompound{
 	String string, name, action;
 	private User user;
 
-	public AlertBox(String getName, int getInitX, int getInitY, String getString, String getAction, User getUser) {
+	public AlertBox(String getName, int getInitX, int getInitY, String getString, String getAction, User getUser, String inputMsg) {
 		user = getUser;
 		posx = getInitX;
 		posy = getInitY;
@@ -34,12 +34,29 @@ public class AlertBox implements UICompound{
 		string = getString;
 		name = getName;
 		action = getAction;
-		compoundComponents.add(new Shape("SQUARE", Color.WHITE, posx, posy, 200, 100, true));
-		compoundComponents.add(new Shape("SQUARE", Color.GRAY, posx, posy, 200, 100));
+		compoundComponents.add(new Shape("SQUARE", Color.WHITE, posx, posy, 400, 100, true));
+		compoundComponents.add(new Shape("SQUARE", Color.GRAY, posx, posy, 400, 100));
 		compoundComponents.add(new Label("Message", posx + 15, posy + 5, string));
-		compoundComponents.add(new TextField("Email", posx + 15, posy + 30, "Email"));
+		compoundComponents.add(new TextField(inputMsg, posx + 15, posy + 30, inputMsg, 300));
 		compoundComponents.add(new Button("Yes", posx +20, posy+70, 50, 25, "Submit", "Check Yes " + action));
 		compoundComponents.add(new Button("No", posx +120, posy+70, 50, 25, "Cancel", "Check No " + action));
+	}
+	
+	public AlertBox(String getName, int getInitX, int getInitY, String getString, String getAction) {
+		posx = getInitX;
+		posy = getInitY;
+		lowX = posx;
+		highX = posx+200;
+		lowY = posy;
+		highY = posy+100;
+		confirm = true;
+		string = getString;
+		name = getName;
+		action = getAction;
+		compoundComponents.add(new Shape("SQUARE", Color.WHITE, posx, posy, 400, 100, true));
+		compoundComponents.add(new Shape("SQUARE", Color.GRAY, posx, posy, 400, 100));
+		compoundComponents.add(new Label("Message", posx + 15, posy + 5, string));
+		compoundComponents.add(new Button("Yes", posx +20, posy+70, 50, 25, "Ok", "Check Yes " + action));
 	}
 
 	public AlertBox(String getName, int getInitX, int getInitY, String getString, String getAction, User getUser, boolean messageGet) {

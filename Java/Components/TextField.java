@@ -34,6 +34,20 @@ public class TextField extends JPanel implements UIComponent{
 		string = setString;
 	}
 
+	public TextField(String getName, int getXPos, int getYPos, String setString, int textLength)
+	{
+		name = getName;
+		xPos = getXPos;
+		yPos = getYPos;
+		width = textLength;
+		height = 30;
+		lowX = xPos;
+		highX = xPos+width;
+		lowY = yPos;
+		highY = yPos+height;
+		string = setString;
+	}
+	
 	public TextField(String getName, int getXPos, int getYPos, String setString, int getLength, int getHeight, boolean flag)
 	{
 		name = getName;
@@ -128,6 +142,25 @@ public class TextField extends JPanel implements UIComponent{
 		}
 	}
 
+	public void activeToggle(boolean toggle) {
+		if (toggle) {
+			if (!active) {
+				if (string.equals(name)) string = "";
+				string += "|";
+			}
+			active = true;
+		} else {
+			if (isActive())
+			{
+				string = string.substring(0,string.length()-1);
+				if (string.equals("")) {
+					string = name;
+				}
+			}
+			active = false;		
+		}
+
+	}
 	@Override
 	public String clickAction() {
 		return "Activate";

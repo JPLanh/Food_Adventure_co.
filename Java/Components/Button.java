@@ -91,7 +91,7 @@ public class Button extends JPanel implements UIComponent{
 		g.setColor(bkColor);
 		g.fillRect(xPos, yPos, width, height);
 		g.setColor(fontColor);
-		g.drawString(string, xPos+(width/2)-(string.length()*3), yPos+(height/2)+2);
+		g.drawString(string, xPos+(width/2)-(string.length()*4), yPos+(height/2)+2);
 	}
 
 	public void setAction(String action) {

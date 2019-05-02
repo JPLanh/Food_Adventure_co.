@@ -71,14 +71,14 @@ public class ClientLoyaltyUI  implements UIFrame{
 			if (splitAction[0].equals("Purchase")) {		
 				if (!awaiting) {
 					Reward getReward = rewardList.get(Integer.parseInt(splitAction[1]));
-					alertComponents.add(new AlertBox("Confirm purchase", 200, 200, "Are you sure you want to purchase " + getReward.getName() + "?", splitAction[1], currentUser));
+					alertComponents.add(new AlertBox("Confirm purchase", 200, 200, "Are you sure you want to purchase " + getReward.getName() + "?", splitAction[1], currentUser, "Email"));
 					awaiting = true;
 				}
 			} else if (splitAction[0].equals("Refund")) {		
 				if (!awaiting) {
 					Reward getReward = rewardList.get(Integer.parseInt(splitAction[1]));
 					//					System.out.println(getReward.getName());
-					alertComponents.add(new AlertBox("Confirm refund", 200, 200, "Refund " + getReward.getName() + "?", splitAction[1], currentUser));
+					alertComponents.add(new AlertBox("Confirm refund", 200, 200, "Refund " + getReward.getName() + "?", splitAction[1], currentUser, "Email"));
 					awaiting = true;
 				}
 			} else if (splitAction[0].equals("Next")) {

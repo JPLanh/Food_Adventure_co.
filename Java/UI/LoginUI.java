@@ -21,6 +21,8 @@ public class LoginUI  implements UIFrame{
 		frameComponents.add(new Button("Login", 300, 260, 150, 30, "LOGIN", "goto Login User"));
 		frameComponents.add(new Label("Create Account", 265, 300, "Not registered?"));
 		frameComponents.add(new LabelLink("Register", 345, 303, 150, 30, "Create an account", "goto Register Frame"));	
+//		frameComponents.add(new Button(users.get(x).getUserName(), 15, 210 + (35*x), 150, 30, users.get(x).getUserName(), "Promote " + users.get(x).getUserName() + " " + users.get(x).getUserUID(), Color.DARK_GRAY, Color.GRAY, 16));
+
 	}
 
 	@Override

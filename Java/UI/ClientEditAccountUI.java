@@ -80,7 +80,7 @@ public class ClientEditAccountUI implements UIFrame{
 						if (checkUser != null) {
 							if (checkUser.getEmail().equals(currentUser.getEmail())) {
 								alertComponents.remove("Confirm Password");
-								alertComponents.add(new AlertBox("New Password", 200, 200, "New Password?", "New Password", currentUser));
+								alertComponents.add(new AlertBox("New Password", 200, 200, "New Password?", "New Password", currentUser, "New Password"));
 								//								HttpRequests.updateUser(currentUser);
 							}
 						}
@@ -104,7 +104,7 @@ public class ClientEditAccountUI implements UIFrame{
 			}
 			if (getAction.equals("Change Password")) {				
 				if (!awaiting) {
-					alertComponents.add(new AlertBox("Confirm Password", 200, 200, "Current Password?", "Change Password", currentUser));
+					alertComponents.add(new AlertBox("Confirm Password", 200, 200, "Current Password?", "Change Password", currentUser, "Email"));
 					awaiting = true;
 				}
 			}
@@ -115,7 +115,7 @@ public class ClientEditAccountUI implements UIFrame{
 				return "goto View User";
 			} else if (getAction.equals("goto Terminate User")) {
 				if (!awaiting) {
-					alertComponents.add(new AlertBox("Terminate Account", 200, 200, "Terminate Account? Enter Email", "Terminate Account", currentUser));
+					alertComponents.add(new AlertBox("Terminate Account", 200, 200, "Terminate Account? Enter Email", "Terminate Account", currentUser, "Email"));
 					awaiting = true;
 					return null;
 				}
